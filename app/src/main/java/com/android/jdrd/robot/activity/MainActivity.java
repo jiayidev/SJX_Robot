@@ -394,10 +394,10 @@ public class MainActivity extends Activity implements View.OnClickListener, Anim
                 Constant.debugLog("size" + size + " ip" + robotList.get(i).get("ip").toString());
                 String ip = robotList.get(i).get("ip").toString();
                 j = 0;
-                int h = ServerSocketUtil.socketlist.size();
+                int h = ServerSocketUtil.socketList.size();
                 flag = false;
                 while (j < h) {
-                    if (ip.equals(ServerSocketUtil.socketlist.get(j).get("ip"))) {
+                    if (ip.equals(ServerSocketUtil.socketList.get(j).get("ip"))) {
                         Constant.debugLog("对比");
                         robotDBHelper.execSQL("update robot set outline= '1' where ip = '" + robotList.get(i).get("ip") + "'");
                         robotList.get(i).put("outline", 1);
@@ -407,7 +407,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Anim
                         break;
                     }
                     j++;
-                    h = ServerSocketUtil.socketlist.size();
+                    h = ServerSocketUtil.socketList.size();
                 }
                 size = robotList.size();
                 if (flag) {

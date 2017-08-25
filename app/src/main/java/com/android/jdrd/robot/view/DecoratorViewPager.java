@@ -7,7 +7,9 @@ import android.view.MotionEvent;
 import android.view.ViewGroup;
 
 /**
- * Created by jdrd on 2017/7/11.
+ * 作者: jiayi.zhang
+ * 时间: 2017/7/31
+ * 描述: 自定义ViewPager
  */
 
 public class DecoratorViewPager extends ViewPager {
@@ -26,6 +28,12 @@ public class DecoratorViewPager extends ViewPager {
         this.parent = parent;
     }
 
+    /**
+     * 防止ViewGroup和子类View冲突
+     *
+     * @param ev
+     * @return ev
+     */
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         if (parent != null) {
@@ -34,6 +42,12 @@ public class DecoratorViewPager extends ViewPager {
         return super.dispatchTouchEvent(ev);
     }
 
+    /**
+     * 拦截手势
+     *
+     * @param arg0
+     * @return
+     */
     @Override
     public boolean onInterceptTouchEvent(MotionEvent arg0) {
         if (parent != null) {
@@ -42,6 +56,12 @@ public class DecoratorViewPager extends ViewPager {
         return super.onInterceptTouchEvent(arg0);
     }
 
+    /**
+     * 点击手势
+     *
+     * @param arg0
+     * @return
+     */
     @Override
     public boolean onTouchEvent(MotionEvent arg0) {
         if (parent != null) {

@@ -1,36 +1,5 @@
 package com.android.jdrd.robot.view;
 
-/**
- * Created by jdrd on 2017/6/15.
- */
-/*
- * HorizontalListView.java v1.5
- *
- *
- * The MIT License
- * Copyright (c) 2011 Paul Soucy (paul@dev-smart.com)
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- */
-
-
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -39,37 +8,57 @@ import android.database.DataSetObserver;
 import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
-import android.view.GestureDetector.OnGestureListener;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.Scroller;
 
+/**
+ * 作者: jiayi.zhang
+ * 时间: 2017/8/1
+ * 描述: 自定义横向ListView
+ * 设计模式:观察者模式
+ */
 public class HorizontalListView extends AdapterView<ListAdapter> {
-
     public boolean mAlwaysOverrideTouch = true;
+    //适配器
     protected ListAdapter mAdapter;
+    //最左边的View在adapter中的索引
     private int mLeftViewIndex = -1;
+    //最右边的View在adapter中的索引
     private int mRightViewIndex = 0;
+    //记录当前滑动的距离里，以像素为单位 取值范围是0-最大滑动距离 永远是正数
     protected int mCurrentX;
+    //保存下一个滚动的位置
     protected int mNextX;
+    // 记录最大的滚动距离，也就是最后一个item完全显示出来的时候的滚动距离。
     private int mMaxX = Integer.MAX_VALUE;
+    //记录最左边可见的那个View从什么位置开始展示  取值范围0到-view.getWidth()
     private int mDisplayOffset = 0;
+    //用于计算fling时滑动dx的Scroller，会根据你的滑动，为你计算出下一个滚动位置
     protected Scroller mScroller;
+    //检测fling等操作
     private GestureDetector mGesture;
+    //回收，缓存View的队列
     private Queue<View> mRemovedViewQueue = new LinkedList<View>();
+
+    //点击监听事件
     private OnItemSelectedListener mOnItemSelected;
     private OnItemClickListener mOnItemClicked;
     private OnItemLongClickListener mOnItemLongClicked;
-    private boolean mDataChanged = false;
 
+    //标记数据集改变
+    private boolean mDataChanged = false;
 
     public HorizontalListView(Context context, AttributeSet attrs) {
         super(context, attrs);
         initView();
     }
 
+    /**
+     * 初始化默认值
+     */
     private synchronized void initView() {
         mLeftViewIndex = -1;
         mRightViewIndex = 0;
@@ -81,26 +70,44 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
         mGesture = new GestureDetector(getContext(), mOnGesture);
     }
 
+    /**
+     * 子项选择点击事件
+     *
+     * @param listener
+     */
     @Override
     public void setOnItemSelectedListener(AdapterView.OnItemSelectedListener listener) {
         mOnItemSelected = listener;
     }
 
+    /**
+     * 子项点击事件
+     *
+     * @param listener
+     */
     @Override
-    public void setOnItemClickListener(AdapterView.OnItemClickListener listener){
+    public void setOnItemClickListener(AdapterView.OnItemClickListener listener) {
         mOnItemClicked = listener;
     }
 
+    /**
+     * 子项长按点击事件
+     *
+     * @param listener
+     */
     @Override
     public void setOnItemLongClickListener(AdapterView.OnItemLongClickListener listener) {
         mOnItemLongClicked = listener;
     }
 
+    /**
+     * 观察者模式
+     */
     private DataSetObserver mDataObserver = new DataSetObserver() {
 
         @Override
         public void onChanged() {
-            synchronized(HorizontalListView.this){
+            synchronized (HorizontalListView.this) {
                 mDataChanged = true;
             }
             invalidate();
@@ -129,7 +136,7 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
 
     @Override
     public void setAdapter(ListAdapter adapter) {
-        if(mAdapter != null) {
+        if (mAdapter != null) {
             mAdapter.unregisterDataSetObserver(mDataObserver);
         }
         mAdapter = adapter;
@@ -137,7 +144,10 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
         reset();
     }
 
-    private synchronized void reset(){
+    /**
+     * 重置默认值
+     */
+    private synchronized void reset() {
         initView();
         removeAllViewsInLayout();
         requestLayout();
@@ -150,8 +160,8 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
 
     private void addAndMeasureChild(final View child, int viewPos) {
         LayoutParams params = child.getLayoutParams();
-        if(params == null) {
-            params = new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
+        if (params == null) {
+            params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
         }
 
         addViewInLayout(child, viewPos, params, true);
@@ -160,16 +170,15 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
     }
 
 
-
     @Override
     protected synchronized void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
 
-        if(mAdapter == null){
+        if (mAdapter == null) {
             return;
         }
-
-        if(mDataChanged){
+        //如果数据改变了，那么重新设置所有内容并从头开始渲染，与上次相同
+        if (mDataChanged) {
             int oldCurrentX = mCurrentX;
             initView();
             removeAllViewsInLayout();
@@ -177,16 +186,18 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
             mDataChanged = false;
         }
 
-        if(mScroller.computeScrollOffset()){
+        //计算下一个要滑动的位置
+        if (mScroller.computeScrollOffset()) {
             int scrollx = mScroller.getCurrX();
             mNextX = scrollx;
         }
-
-        if(mNextX <= 0){
+        //做一个简单的非法值校验
+        if (mNextX <= 0) {
             mNextX = 0;
             mScroller.forceFinished(true);
         }
-        if(mNextX >= mMaxX) {
+        //做一个简单的非法值校验
+        if (mNextX >= mMaxX) {
             mNextX = mMaxX;
             mScroller.forceFinished(true);
         }
@@ -199,8 +210,8 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
 
         mCurrentX = mNextX;
 
-        if(!mScroller.isFinished()){
-            post(new Runnable(){
+        if (!mScroller.isFinished()) {
+            post(new Runnable() {
                 @Override
                 public void run() {
                     requestLayout();
@@ -210,32 +221,40 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
         }
     }
 
+    /**
+     * 将子View添加到当前视图的左边和右边，直到屏幕满了为止
+     *
+     * @param dx
+     */
     private void fillList(final int dx) {
+        //把右边的子View并确定其右边缘
         int edge = 0;
-        View child = getChildAt(getChildCount()-1);
-        if(child != null) {
+        View child = getChildAt(getChildCount() - 1);
+        if (child != null) {
             edge = child.getRight();
         }
-        fillListRight(edge, dx);
-
+        fillListRight(edge, dx);//如果最右边空了，就填充，直到最右边填满屏幕为止
+        //把左边的子View和确定它的左边缘
         edge = 0;
         child = getChildAt(0);
-        if(child != null) {
+        if (child != null) {
             edge = child.getLeft();
         }
+        //如果最左边空了，就填充，直到最左边填满屏幕为止
         fillListLeft(edge, dx);
 
 
     }
 
     private void fillListRight(int rightEdge, final int dx) {
-        while(rightEdge + dx < getWidth() && mRightViewIndex < mAdapter.getCount()) {
-
+        //循环添加视图直到屏幕被填满
+        while (rightEdge + dx < getWidth() && mRightViewIndex < mAdapter.getCount()) {
+            //我们写的adapter的getView，第一个参数是position,第二个参数是convertView，第三个参数是ViewGroup
             View child = mAdapter.getView(mRightViewIndex, mRemovedViewQueue.poll(), this);
             addAndMeasureChild(child, -1);
             rightEdge += child.getMeasuredWidth();
 
-            if(mRightViewIndex == mAdapter.getCount()-1) {
+            if (mRightViewIndex == mAdapter.getCount() - 1) {
                 mMaxX = mCurrentX + rightEdge - getWidth();
             }
 
@@ -248,7 +267,7 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
     }
 
     private void fillListLeft(int leftEdge, final int dx) {
-        while(leftEdge + dx > 0 && mLeftViewIndex >= 0) {
+        while (leftEdge + dx > 0 && mLeftViewIndex >= 0) {
             View child = mAdapter.getView(mLeftViewIndex, mRemovedViewQueue.poll(), this);
             addAndMeasureChild(child, 0);
             leftEdge -= child.getMeasuredWidth();
@@ -259,7 +278,8 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
 
     private void removeNonVisibleItems(final int dx) {
         View child = getChildAt(0);
-        while(child != null && child.getRight() + dx <= 0) {
+        //移除左边的滑出屏幕的view，直到最左边的view还可见，就停止
+        while (child != null && child.getRight() + dx <= 0) {
             mDisplayOffset += child.getMeasuredWidth();
             mRemovedViewQueue.offer(child);
             removeViewInLayout(child);
@@ -268,20 +288,21 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
 
         }
 
-        child = getChildAt(getChildCount()-1);
-        while(child != null && child.getLeft() + dx >= getWidth()) {
+        child = getChildAt(getChildCount() - 1);
+        //移除右边的滑出屏幕的view，直到最右边的view还可见，就停止
+        while (child != null && child.getLeft() + dx >= getWidth()) {
             mRemovedViewQueue.offer(child);
             removeViewInLayout(child);
             mRightViewIndex--;
-            child = getChildAt(getChildCount()-1);
+            child = getChildAt(getChildCount() - 1);
         }
     }
 
     private void positionItems(final int dx) {
-        if(getChildCount() > 0){
+        if (getChildCount() > 0) {
             mDisplayOffset += dx;
             int left = mDisplayOffset;
-            for(int i=0;i<getChildCount();i++){
+            for (int i = 0; i < getChildCount(); i++) {
                 View child = getChildAt(i);
                 int childWidth = child.getMeasuredWidth();
                 child.layout(left, 0, left + childWidth, child.getMeasuredHeight());
@@ -302,10 +323,13 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
         return handled;
     }
 
+    /**
+     * 检测到fling事件，启动scroller，并且触发onLayout，就会触发整个fling操作
+     */
     protected boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
                               float velocityY) {
-        synchronized(HorizontalListView.this){
-            mScroller.fling(mNextX, 0, (int)-velocityX, 0, 0, mMaxX, 0, 0);
+        synchronized (HorizontalListView.this) {
+            mScroller.fling(mNextX, 0, (int) -velocityX, 0, 0, mMaxX, 0, 0);
         }
         requestLayout();
 
@@ -313,11 +337,15 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
     }
 
     protected boolean onDown(MotionEvent e) {
+        //滑动过程中，只要触摸就停止滑动
         mScroller.forceFinished(true);
         return true;
     }
 
-    private OnGestureListener mOnGesture = new GestureDetector.SimpleOnGestureListener() {
+    /**
+     * 检测fling等操作的回调
+     */
+    private GestureDetector.OnGestureListener mOnGesture = new GestureDetector.SimpleOnGestureListener() {
 
         @Override
         public boolean onDown(MotionEvent e) {
@@ -334,8 +362,9 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
         public boolean onScroll(MotionEvent e1, MotionEvent e2,
                                 float distanceX, float distanceY) {
 
-            synchronized(HorizontalListView.this){
-                mNextX += (int)distanceX;
+            synchronized (HorizontalListView.this) {
+                //触摸滚动的时候，计算mNextScrollX，然后触发onLayout进行重绘，触摸滑动停止，重新布局停止
+                mNextX += (int) distanceX;
             }
             requestLayout();
 
@@ -344,14 +373,14 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
 
         @Override
         public boolean onSingleTapConfirmed(MotionEvent e) {
-            for(int i=0;i<getChildCount();i++){
+            for (int i = 0; i < getChildCount(); i++) {
                 View child = getChildAt(i);
                 if (isEventWithinView(e, child)) {
-                    if(mOnItemClicked != null){
-                        mOnItemClicked.onItemClick(HorizontalListView.this, child, mLeftViewIndex + 1 + i, mAdapter.getItemId( mLeftViewIndex + 1 + i ));
+                    if (mOnItemClicked != null) {
+                        mOnItemClicked.onItemClick(HorizontalListView.this, child, mLeftViewIndex + 1 + i, mAdapter.getItemId(mLeftViewIndex + 1 + i));
                     }
-                    if(mOnItemSelected != null){
-                        mOnItemSelected.onItemSelected(HorizontalListView.this, child, mLeftViewIndex + 1 + i, mAdapter.getItemId( mLeftViewIndex + 1 + i ));
+                    if (mOnItemSelected != null) {
+                        mOnItemSelected.onItemSelected(HorizontalListView.this, child, mLeftViewIndex + 1 + i, mAdapter.getItemId(mLeftViewIndex + 1 + i));
                     }
                     break;
                 }
@@ -376,6 +405,7 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
         }
 
         private boolean isEventWithinView(MotionEvent e, View child) {
+            //用于测量的临时矩形
             Rect viewRect = new Rect();
             int[] childPosition = new int[2];
             child.getLocationOnScreen(childPosition);
@@ -387,7 +417,6 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
             return viewRect.contains((int) e.getRawX(), (int) e.getRawY());
         }
     };
-
 
 
 }

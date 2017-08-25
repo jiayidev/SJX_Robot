@@ -120,7 +120,7 @@ public class RobotDialog extends Dialog {
         super.setContentView(mView);
     }
     public static void sendCommand(){
-        for(Map map: ServerSocketUtil.socketlist){
+        for(Map map: ServerSocketUtil.socketList){
             if(map.get("ip").equals(IP)){
                 final OutputStream out = (OutputStream) map.get("out");
                 thread = new Thread(new Runnable() {
@@ -142,7 +142,7 @@ public class RobotDialog extends Dialog {
 
     public static void sendCommandList(){
         Constant.debugLog(robotlist.toString());
-        for(Map map: ServerSocketUtil.socketlist){
+        for(Map map: ServerSocketUtil.socketList){
             if(map.get("ip").equals(IP)){
                 final OutputStream out = (OutputStream) map.get("out");
                 thread = new Thread(new Runnable() {
