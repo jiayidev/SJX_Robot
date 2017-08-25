@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#EEEEEE"
+    >
+
+    <RelativeLayout
+        android:id="@+id/main"
+        android:background="@color/green"
+        android:layout_width="match_parent"
+        android:layout_height="48dp">
+        <RelativeLayout
+            android:id="@+id/setting_back"
+            android:layout_width="40dp"
+            android:layout_height="match_parent">
+            <Button
+                android:id="@+id/back"
+                android:background="@drawable/btn_back_selector"
+                android:layout_marginLeft="10dp"
+                android:layout_centerVertical="true"
+                android:layout_width="17dp"
+                android:layout_height="21dp" />
+        </RelativeLayout>
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textSize="17sp"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:text="@string/card_list"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+        <Button
+            android:id="@+id/add_card"
+            android:layout_width="23dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:visibility="gone"
+            android:layout_marginRight="10dp"
+            android:layout_height="23dp"
+            android:background="@animator/btn_add_desk_selector"
+            />
+    </RelativeLayout>
+
+    <ListView
+        android:id="@+id/cardlist"
+        android:divider="#EEEEEE"
+        android:dividerHeight = "1dp"
+        android:background="@color/white"
+        android:layout_margin="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+</LinearLayout>

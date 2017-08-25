@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#EEEEEE"
+    tools:context="com.android.jdrd.robot.activity.MainActivity">
+
+    <RelativeLayout
+        android:id="@+id/main"
+        android:background="@color/green"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/top_height">
+        <ImageView
+            android:id="@+id/imgViewmapnRight"
+            android:layout_width="20dp"
+            android:layout_height="16dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:background="@animator/btn_more_selector"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textSize="17sp"
+            android:gravity="center"
+            android:layout_centerInParent="true"
+            android:textColor="#FFFFFF"
+            android:text="@string/dining"
+            />
+    </RelativeLayout>
+    <LinearLayout
+        android:id="@+id/linear_robot"
+        android:layout_below="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:orientation="vertical"
+        android:layout_height="106dp">
+
+        <HorizontalScrollView
+            android:id="@+id/aas"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                >
+                <GridView
+                    android:id="@+id/robotgirdview"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:dividerHeight = "9dp"
+                    android:divider="#EEEEEE"
+                    android:horizontalSpacing="15dp"
+                    android:verticalSpacing="15dp"
+                    android:stretchMode="spacingWidthUniform"
+                    >
+                </GridView>
+            </LinearLayout>
+        </HorizontalScrollView>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/linear_desk"
+        android:layout_below="@+id/linear_robot"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:background="@color/white"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_height="46dp">
+            <TextView
+                android:id="@+id/area_text"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@string/choose_area"
+                android:layout_marginLeft="17dp"
+                android:textSize="16sp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textColor="#333333"
+                />
+            <Button
+                android:id="@+id/config_redact"
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:textColor="@color/black"
+                android:layout_marginRight="17dp"
+                android:textSize="25sp"
+                android:background="@animator/btn_direct_selector"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                />
+        </RelativeLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"/>
+        <GridView
+            android:id="@+id/gview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:dividerHeight = "1dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:divider="#EEEEEE"
+            android:background="@color/white"
+            android:numColumns="auto_fit"
+            android:columnWidth="109dp"
+            android:layout_marginBottom="20dp"
+            />
+    </LinearLayout>
+    <RelativeLayout
+        android:layout_below="@+id/main"
+        android:id="@+id/map_right_Ralative"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true">
+        <LinearLayout
+            android:id="@+id/linearlayout_all"
+            android:layout_width="80dp"
+            android:layout_alignParentLeft="true"
+            android:orientation="vertical"
+            android:visibility="gone"
+            android:background="#087235"
+            android:layout_height="match_parent">
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#539D72"
+                />
+            <ListView
+                android:id="@+id/area"
+                android:divider="@null"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
+        </LinearLayout>
+    </RelativeLayout>
+
+
+
+
+
+
+
+    <!--<Button android:id="@+id/button_composer_sleep"-->
+    <!--android:layout_width="wrap_content" android:layout_height="wrap_content"-->
+    <!--android:background="@mipmap/composer_sleep"-->
+    <!--android:layout_marginBottom="10dip" android:layout_marginLeft="10dip"-->
+    <!--android:layout_alignParentBottom="true">-->
+    <!--</Button>-->
+
+    <!--<Button android:id="@+id/button_composer_thought"-->
+    <!--android:layout_width="wrap_content" android:layout_height="wrap_content"-->
+    <!--android:background="@mipmap/composer_thought"-->
+    <!--android:layout_marginBottom="10dip" android:layout_marginLeft="10dip"-->
+    <!--android:layout_alignParentBottom="true" android:layout_above="@id/button_composer_sleep">-->
+    <!--</Button>-->
+
+    <!--<Button android:id="@+id/button_composer_music"-->
+    <!--android:layout_width="wrap_content" android:layout_height="wrap_content"-->
+    <!--android:background="@mipmap/composer_music"-->
+    <!--android:layout_marginBottom="10dip" android:layout_marginLeft="10dip"-->
+    <!--android:layout_alignParentBottom="true">-->
+    <!--</Button>-->
+
+    <!--<Button android:id="@+id/button_composer_place"-->
+    <!--android:layout_width="wrap_content" android:layout_height="wrap_content"-->
+    <!--android:background="@mipmap/composer_place"-->
+    <!--android:layout_marginBottom="10dip" android:layout_marginLeft="10dip"-->
+    <!--android:layout_alignParentBottom="true" android:layout_above="@id/button_composer_music">-->
+    <!--</Button>-->
+
+
+    <!--<Button android:id="@+id/button_composer_with"-->
+    <!--android:layout_width="wrap_content" android:layout_height="wrap_content"-->
+    <!--android:background="@mipmap/composer_with"-->
+    <!--android:layout_marginBottom="10dip" android:layout_marginLeft="10dip"-->
+    <!--android:layout_alignParentBottom="true" android:layout_above="@id/button_composer_place">-->
+    <!--</Button>-->
+
+
+    <!--<Button android:id="@+id/button_composer_camera"-->
+    <!--android:layout_width="wrap_content" android:layout_height="wrap_content"-->
+    <!--android:background="@mipmap/composer_camera"-->
+    <!--android:layout_marginBottom="10dip" android:layout_marginLeft="10dip"-->
+    <!--android:layout_alignParentBottom="true" android:layout_above="@id/button_composer_with">-->
+    <!--</Button>-->
+
+
+    <!--<Button android:id="@+id/button_friends_delete"-->
+    <!--android:layout_width="wrap_content" android:layout_height="wrap_content"-->
+    <!--android:background="@mipmap/friends_delete"-->
+    <!--android:layout_marginBottom="10dip" android:layout_marginLeft="10dip"-->
+    <!--android:layout_alignParentBottom="true" android:layout_above="@id/button_composer_camera">-->
+    <!--</Button>-->
+    <Button
+        android:id="@+id/up"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="339dp"
+        android:layout_marginRight="7dp"
+        android:visibility="gone"
+        android:background="@animator/btn_up_selector"/>
+    <Button
+        android:id="@+id/down"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="7dp"
+        android:layout_marginBottom="272dp"
+        android:visibility="gone"
+        android:background="@animator/btn_down_selector"/>
+    <Button
+        android:id="@+id/left"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="205dp"
+        android:layout_marginRight="7dp"
+        android:visibility="gone"
+        android:background="@animator/btn_left_selector"/>
+    <Button
+        android:id="@+id/right"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="138dp"
+        android:layout_marginRight="7dp"
+        android:visibility="gone"
+        android:background="@animator/btn_right_selector"/>
+    <Button
+        android:id="@+id/stop"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="71dp"
+        android:layout_marginRight="7dp"
+        android:visibility="gone"
+        android:background="@animator/btn_stop_selector"/>
+    <Button
+        android:id="@+id/shrink"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="4dp"
+        android:layout_marginRight="7dp"
+        android:background="@animator/btn_shrink_selector"/>
+</RelativeLayout>

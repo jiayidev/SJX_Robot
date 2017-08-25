@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:background="@drawable/bg_dialog"
+    >
+
+        <LinearLayout
+            android:layout_width="310dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            android:background="@drawable/bg_dialog"
+            android:gravity="center"
+            >
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:gravity="center"
+                android:background="@mipmap/tck02"
+                android:textColor="#FFFFFF"
+                android:text="@string/choose_robot"
+                android:textSize="15sp"
+                />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#EEEEEE"
+                />
+            <GridView
+                android:id="@+id/robot_girdview"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_margin="5dp"
+                android:numColumns="auto_fit"
+                android:columnWidth="80dp"
+                android:layout_width="300dp"
+                android:layout_height="200dp"/>
+        </LinearLayout>
+</LinearLayout>

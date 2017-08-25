@@ -1,0 +1,87 @@
+<resources>
+    <string name="app_name">麦斯送餐</string>
+    <string name="btn_sure">确定</string>
+    <string name="btn_delete">删除</string>
+    <string name="btn_cancle">取消</string>
+    <string name="config_add">添加</string>
+    <string name="config_redact">编辑</string>
+    <string name="change_area">请修改区域名称</string>
+    <string name="add_area">请输入区域名称</string>
+    <string name="choose_area">请选择区域</string>
+    <string name="choose_robot">请选择执行的机器</string>
+    <string name="deskname_setting">设置</string>
+    <string name="deskname">桌名</string>
+
+    <string name="goalname">站点</string>
+    <string name="direction">方向</string>
+    <string name="speed">速度</string>
+    <string name="mp3">MP3通道</string>
+    <string name="outime">超时时间</string>
+    <string name="shownum">显示编号</string>
+    <string name="showcolor">显示颜色</string>
+
+    <string name="straight">直行</string>
+    <string name="derail">脱轨运行</string>
+    <string name="rotato">脱轨旋转</string>
+    <string name="wait">等待退出</string>
+    <string name="puthook">放牵引钩</string>
+    <string name="lockhook">锁牵引钩</string>
+
+    <string name="name">名称</string>
+    <string name="ip">IP地址</string>
+    <string name="outline">在线状态</string>
+    <string name="electric">电量电压</string>
+    <string name="area">服务区域</string>
+    <string name="state">运动状态</string>
+    <string name="robot_state">机器人状态</string>
+    <string name="robot_state_">机器人状态</string>
+    <string name="command_num">指令总数</string>
+    <string name="excute_command">执行指令</string>
+    <string name="excute_time">执行时间</string>
+    <string name="command_state">指令状态</string>
+    <string name="last_command_state">前指令状态</string>
+    <string name="last_location">最后坐标</string>
+    <string name="obstacle">障碍物</string>
+    <string name="main">首页</string>
+    <string name="dining">麦斯送餐</string>
+    <string name="desk_add">添加桌子</string>
+    <string name="desk_settings">添加桌子</string>
+    <string name="desk_deract">编辑桌子</string>
+    <string name="command_deract">编辑命令</string>
+    <string name="robot_settings">机器人编辑</string>
+    <string name="command_settings">添加指令</string>
+    <string name="added_settings">已有指令</string>
+    <string name="add_desk">请输入桌子名称</string>
+    <string name="name_setting">确认修改</string>
+
+    <string name="card_settings">系统卡编辑</string>
+    <string name="card_list">系统卡列表</string>
+    <string name="card_address">ID卡编码</string>
+    <string name="add_card">请输入系统卡名称</string>
+    <array name="DATABASE_INFO">
+        <item>robot.db</item>
+        <item>1</item>
+    </array>
+
+    <array name="CREATE_TABLE_SQL">
+        <item>CREATE TABLE area (id INTEGER PRIMARY KEY AUTOINCREMENT,name TEXT)</item>
+        <item>CREATE TABLE desk (id INTEGER PRIMARY KEY AUTOINCREMENT,name TEXT,area INTEGER)</item>
+        <item>CREATE TABLE command (id INTEGER PRIMARY KEY AUTOINCREMENT,type INTEGER,desk
+            INTERGER,goal INTERGER,direction INTERGER,
+            speed INTERGER,music INTERGER,Error INTERGER,outime INTERGER,shownumber
+            INTERGER,showcolor INTERGER)
+        </item>
+        <item>CREATE TABLE robot (id INTEGER PRIMARY KEY AUTOINCREMENT ,ip TEXT ,name TEXT ,outline
+            INTERGER ,electric INTERGER ,area INTERGER,
+            state INTERGER,robotstate INTERGER,obstacle INTERGER, commandnum INTERGER ,excute
+            INTERGER , excutetime INTERGER ,commandstate INTERGER ,lastcommandstate INTERGER
+            ,lastlocation INTEGER)
+        </item>
+        <item>CREATE TABLE card (id INTEGER PRIMARY KEY AUTOINCREMENT,name TEXT,address INTERGER)
+        </item>
+    </array>
+
+    <array name="UPDATE_TABLE_SQL">
+        <item></item>
+    </array>
+</resources>
