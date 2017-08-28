@@ -27,34 +27,42 @@ import java.util.Map;
  */
 
 public class CardConfig extends Activity implements View.OnClickListener {
+    // 系统卡适配器
     private CardAdapter myAdapter;
-    private ListView cardlist;
+    // 卡列表
+    private ListView cardList;
+    // 数据库帮助类
     private RobotDBHelper robotDBHelper;
+    // 存储系统卡
     private List<Map> card_list = new ArrayList<>();
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // 隐藏标题栏
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         // 隐藏状态栏
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
         setContentView(R.layout.activity_card);
 
+        // 初始化数据库
         robotDBHelper = RobotDBHelper.getInstance(getApplicationContext());
 
         findViewById(R.id.setting_back).setOnClickListener(this);
         findViewById(R.id.back).setOnClickListener(this);
         findViewById(R.id.add_card).setOnClickListener(this);
-        cardlist = (ListView) findViewById(R.id.cardlist);
-
-        cardlist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        cardList = (ListView) findViewById(R.id.cardlist);
+        // 子列表点击事件
+        cardList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    Intent intent = new Intent(CardConfig.this, CardConfigActivity.class);
-                    intent.putExtra("id",  (Integer) card_list.get(position).get("id"));
-                    Constant.debugLog("id"+card_list.get(position).get("id").toString());
-                    startActivity(intent);
+                // 向CardConfigActivity传递数据
+                Intent intent = new Intent(CardConfig.this, CardConfigActivity.class);
+                intent.putExtra("id", (Integer) card_list.get(position).get("id"));
+                // 打印Log日志
+                Constant.debugLog("id----->" + card_list.get(position).get("id").toString());
+                startActivity(intent);
             }
         });
     }
@@ -62,14 +70,21 @@ public class CardConfig extends Activity implements View.OnClickListener {
     @Override
     protected void onResume() {
         super.onResume();
-        card_list = robotDBHelper.queryListMap("select * from card " ,null);
-        myAdapter = new CardAdapter(this,card_list);
-        cardlist.setAdapter(myAdapter);
+        // 查询ID卡
+        card_list = robotDBHelper.queryListMap("select * from card ", null);
+        myAdapter = new CardAdapter(this, card_list);
+        // 加载适配器
+        cardList.setAdapter(myAdapter);
     }
 
+    /**
+     * 按钮点击事件
+     *
+     * @param v 获取按钮id
+     */
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.setting_back:
                 finish();
                 break;
@@ -77,6 +92,7 @@ public class CardConfig extends Activity implements View.OnClickListener {
                 finish();
                 break;
             case R.id.add_card:
+                // 跳转到系统卡编辑页面CardConfigActivity 并传值
                 Intent intent = new Intent(CardConfig.this, CardConfigActivity.class);
                 intent.putExtra("id", 0);
                 startActivity(intent);

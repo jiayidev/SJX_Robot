@@ -29,41 +29,55 @@ import java.util.Map;
  */
 
 public class CardConfigActivity extends Activity implements View.OnClickListener {
+    // 数据库帮助类
     private RobotDBHelper robotDBHelper;
+    // 编号
     private int card_id;
-    private EditText cardName, cardAdress;
+    // 卡名称和地址
+    private EditText cardName, cardAddress;
+    // 确定和删除按钮
     private Button btn_sure, btn_delete;
+    // 存储系统卡列表
     private List<Map> card_list = new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // 隐藏标题栏
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         // 隐藏状态栏
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_cardactivity);
+
+        // 初始化数据库
         robotDBHelper = RobotDBHelper.getInstance(getApplicationContext());
 
-        Intent intent = getIntent();// 收取 email
+        // 获取CardConfig传递过来的数据
+        Intent intent = getIntent();
         card_id = intent.getIntExtra("id", 0);
 
+        // 初始化控件
         cardName = (EditText) findViewById(R.id.cardname);
-        cardAdress = (EditText) findViewById(R.id.cardaddress);
+        cardAddress = (EditText) findViewById(R.id.cardaddress);
         btn_sure = (Button) findViewById(R.id.btn_sure);
         btn_sure.setOnClickListener(this);
         btn_delete = (Button) findViewById(R.id.btn_delete);
         btn_delete.setOnClickListener(this);
         findViewById(R.id.setting_back).setOnClickListener(this);
         findViewById(R.id.back).setOnClickListener(this);
-        Constant.debugLog("card_id" + card_id);
+        // 打印log
+        Constant.debugLog("card_id----->" + card_id);
+        // 等于card_id == 0的话删除按钮不显示
         if (card_id == 0) {
             btn_delete.setVisibility(View.GONE);
         } else {
+            // 查询ID卡
             card_list = robotDBHelper.queryListMap("select * from card where id = '" + card_id + "'", null);
-            Constant.debugLog("card_list" + card_list.toString());
+            //打印log card_list列表
+            Constant.debugLog("card_list----->" + card_list.toString());
             cardName.setText(card_list.get(0).get("name").toString());
-            cardAdress.setText(card_list.get(0).get("address").toString());
+            cardAddress.setText(card_list.get(0).get("address").toString());
         }
     }
 
@@ -76,14 +90,18 @@ public class CardConfigActivity extends Activity implements View.OnClickListener
             case R.id.back:
                 finish();
                 break;
+            // 删除
             case R.id.btn_delete:
                 dialog();
                 break;
+            // 确定
             case R.id.btn_sure:
+                // 等于0的话没有数据，则添加一条数据
                 if (card_id == 0) {
-                    robotDBHelper.insert("card", new String[]{"name", "address"}, new Object[]{cardName.getText().toString(), cardAdress.getText().toString().trim()});
+                    robotDBHelper.insert("card", new String[]{"name", "address"}, new Object[]{cardName.getText().toString(), cardAddress.getText().toString().trim()});
                 } else {
-                    robotDBHelper.execSQL("update card set name= '" + cardName.getText().toString().trim() + "',address = '" + cardAdress.getText().toString().trim() + "'  where id= '" + card_id + "'");
+                    //不等于0的话有数据，则修改name and address
+                    robotDBHelper.execSQL("update card set name= '" + cardName.getText().toString().trim() + "',address = '" + cardAddress.getText().toString().trim() + "'  where id= '" + card_id + "'");
                 }
                 finish();
                 break;
@@ -94,19 +112,24 @@ public class CardConfigActivity extends Activity implements View.OnClickListener
 
     private void dialog() {
         dialog = new DeleteDialog(this);
+        // Dialog 确定按钮
         dialog.setOnPositiveListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // 删除ID卡
                 robotDBHelper.execSQL("delete from card where id= '" + card_id + "'");
                 finish();
             }
         });
+        // Dialog 取消按钮
         dialog.setOnNegativeListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // 销毁当前Dialog
                 dialog.dismiss();
             }
         });
+        // 显示Dialog
         dialog.show();
     }
 }

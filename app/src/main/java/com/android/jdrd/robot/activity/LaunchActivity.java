@@ -11,6 +11,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Property;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 
 import com.android.jdrd.robot.R;
 import com.android.jdrd.robot.helper.RobotDBHelper;
@@ -30,11 +32,17 @@ public class LaunchActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // 隐藏标题栏
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        // 隐藏状态栏
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_launch);
         //初始化
         initWidget();
         initData();
     }
+
     protected void initWidget() {
         //拿到根布局
         View root = findViewById(R.id.activity_launch);

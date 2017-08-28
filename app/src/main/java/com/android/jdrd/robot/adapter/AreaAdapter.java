@@ -1,21 +1,17 @@
 package com.android.jdrd.robot.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.jdrd.robot.R;
-import com.android.jdrd.robot.activity.CommandAcitivty;
 import com.android.jdrd.robot.activity.MainActivity;
-import com.android.jdrd.robot.util.Constant;
 
 import java.util.List;
 import java.util.Map;

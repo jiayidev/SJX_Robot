@@ -45,7 +45,7 @@
             <!-- &gt; -->
         </activity>
         <activity
-            android:name=".activity.DeskConfigPathAcitivty"
+            android:name=".activity.DeskConfigPathActivity"
             android:windowSoftInputMode="stateHidden|stateAlwaysHidden" />
         <activity
             android:name=".activity.RobotConfigActivity"
@@ -54,7 +54,7 @@
             android:name=".activity.RobotActivity"
             android:windowSoftInputMode="stateHidden|stateAlwaysHidden" />
         <activity
-            android:name=".activity.CommandAcitivty"
+            android:name=".activity.CommandActivity"
             android:windowSoftInputMode="stateHidden|stateAlwaysHidden" />
         <activity
             android:name=".activity.CardConfig"

@@ -37,15 +37,17 @@ import java.util.Map;
  * 描述: 编辑命令
  */
 
-public class CommandAcitivty extends Activity implements View.OnClickListener {
+public class CommandActivity extends Activity implements View.OnClickListener {
+    // 初始化数据库帮助类
     private RobotDBHelper robotDBHelper;
     private int command_id;
-    private Map commandconfig;
-    private List<Map> goallist;
+    private Map commandConfig;
+    private List<Map> goalList;
     private List<Map> list;
-    private TextView speed, mp3, outime, shownum, showcolor;
+    private TextView speed, mp3, outTime, showNum, showColor;
     private TextView goal, direction;
-    public static int goalnum = -1, directionnum = -1;
+    // 目标数和方向数
+    public static int goalNum = -1, directionNum = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,10 +58,16 @@ public class CommandAcitivty extends Activity implements View.OnClickListener {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_command_config);
+
+        // 初始化数据库
         robotDBHelper = RobotDBHelper.getInstance(getApplicationContext());
+
+        // 获取DeskConfigPathActivity 传递过来的数据
         Intent intent = getIntent();
         command_id = intent.getIntExtra("id", 0);
-        Log.e("commandlist", command_id + "");
+        Log.e("commandList----->", command_id + "");
+
+        // 初始化控件
         goal = (TextView) findViewById(R.id.goal);
         direction = (TextView) findViewById(R.id.direction);
         goal.setOnClickListener(this);
@@ -68,39 +76,47 @@ public class CommandAcitivty extends Activity implements View.OnClickListener {
         speed.setOnClickListener(this);
         mp3 = (TextView) findViewById(R.id.mp3);
         mp3.setOnClickListener(this);
-        outime = (TextView) findViewById(R.id.outime);
-        outime.setOnClickListener(this);
-        shownum = (TextView) findViewById(R.id.shownum);
-        shownum.setOnClickListener(this);
-        showcolor = (TextView) findViewById(R.id.showcolor);
-        showcolor.setOnClickListener(this);
+        outTime = (TextView) findViewById(R.id.outime);
+        outTime.setOnClickListener(this);
+        showNum = (TextView) findViewById(R.id.shownum);
+        showNum.setOnClickListener(this);
+        showColor = (TextView) findViewById(R.id.showcolor);
+        showColor.setOnClickListener(this);
         findViewById(R.id.btn_delete).setOnClickListener(this);
         findViewById(R.id.setting_back).setOnClickListener(this);
         findViewById(R.id.back).setOnClickListener(this);
-        goallist = robotDBHelper.queryListMap("select * from card ", null);
 
+        // 查询ID卡
+        goalList = robotDBHelper.queryListMap("select * from card ", null);
+
+        // 存储map的数据
         list = new ArrayList<>();
+        // 以键值对来传递值
         Map<String, Object> map;
+        // 直行
         map = new HashMap<>();
         map.put("name", "直行");
         list.add(map);
+        // 左岔道
         map = new HashMap<>();
         map.put("name", "左岔道");
         list.add(map);
+        // 右岔道
         map = new HashMap<>();
         map.put("name", "右岔道");
         list.add(map);
 
-        List<Map> commandlist = robotDBHelper.queryListMap("select * from command where id = '" + command_id + "'", null);
-        if (commandlist != null && commandlist.size() > 0) {
-            commandconfig = commandlist.get(0);
-            if (commandconfig.get("goal") != null) {
-                if (goallist != null && goallist.size() > 0) {
+        // 查询命令列表
+        List<Map> commandList = robotDBHelper.queryListMap("select * from command where id = '" + command_id + "'", null);
+        if (commandList != null && commandList.size() > 0) {
+            commandConfig = commandList.get(0);
+            if (commandConfig.get("goal") != null) {
+                if (goalList != null && goalList.size() > 0) {
                     boolean flag = false;
-                    for (int i = 0, size = goallist.size(); i < size; i++) {
-                        if (goallist.get(i).get("id").equals(commandconfig.get("goal"))) {
-                            goal.setText(goallist.get(i).get("name").toString());
-                            goalnum = i;
+                    for (int i = 0, size = goalList.size(); i < size; i++) {
+                        if (goalList.get(i).get("id").equals(commandConfig.get("goal"))) {
+                            goal.setText(goalList.get(i).get("name").toString());
+                            goalNum = i;
                             flag = true;
                             break;
                         }
@@ -112,9 +128,11 @@ public class CommandAcitivty extends Activity implements View.OnClickListener {
             } else {
                 goal.setText("请选择站点");
             }
-            if (commandconfig.get("direction") != null) {
-                directionnum = (int) commandconfig.get("direction");
-                switch (directionnum) {
+            // 获取机器人运行的目标
+            if (commandConfig.get("direction") != null) {
+                directionNum = (int) commandConfig.get("direction");
+                // 设置机器人运行的方向 0->直行  1->左岔道  2->右岔道
+                switch (directionNum) {
                     case 0:
                         direction.setText("直行");
                         break;
@@ -129,22 +147,28 @@ public class CommandAcitivty extends Activity implements View.OnClickListener {
                 direction.setText("请选择方向");
             }
 
-            if (commandconfig.get("speed") != null) {
-                speed.setText(commandconfig.get("speed").toString().trim());
+            // 设置机器人运行时的速度
+            if (commandConfig.get("speed") != null) {
+                speed.setText(commandConfig.get("speed").toString().trim());
             }
-            if (commandconfig.get("music") != null) {
-                mp3.setText(commandconfig.get("music").toString());
+            // 设置机器人运行时的音乐
+            if (commandConfig.get("music") != null) {
+                mp3.setText(commandConfig.get("music").toString());
             }
-            if (commandconfig.get("outime") != null) {
-                outime.setText(commandconfig.get("outime").toString());
+            // 设置机器人运行时的超时时间
+            if (commandConfig.get("outime") != null) {
+                outTime.setText(commandConfig.get("outime").toString());
             }
-            if (commandconfig.get("shownumber") != null) {
-                shownum.setText(commandconfig.get("shownumber").toString());
+            // 设置机器人运行时的显示编号
+            if (commandConfig.get("shownumber") != null) {
+                showNum.setText(commandConfig.get("shownumber").toString());
             }
-            if (commandconfig.get("showcolor") != null) {
-                showcolor.setText(commandconfig.get("showcolor").toString());
+            // 设置机器人运行时的显示颜色
+            if (commandConfig.get("showcolor") != null) {
+                showColor.setText(commandConfig.get("showcolor").toString());
             }
-            switch ((int) commandconfig.get("type")) {
+
+            switch ((int) commandConfig.get("type")) {
                 case 0:
                     break;
                 case 1:
@@ -168,94 +192,106 @@ public class CommandAcitivty extends Activity implements View.OnClickListener {
         findViewById(R.id.btn_sure).setOnClickListener(this);
     }
 
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
-
+    /**
+     * 按钮点击事件
+     *
+     * @param v 获取按钮的ID
+     */
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            // 返回
             case R.id.setting_back:
                 finish();
                 break;
+            // 返回
             case R.id.back:
                 finish();
                 break;
+            // 删除
             case R.id.btn_delete:
                 dialog();
                 break;
+            // 站点
             case R.id.goal:
                 dialog_spinner(true);
                 break;
+            // 方向
             case R.id.direction:
                 dialog_spinner(false);
                 break;
+            // 速度
             case R.id.speed:
                 dialog_Text(0);
                 break;
+            // MP3音乐
             case R.id.mp3:
                 dialog_Text(1);
                 break;
             case R.id.outime:
                 dialog_Text(2);
                 break;
+            // 显示编号
             case R.id.shownum:
                 dialog_Text(3);
                 break;
+            // 显示颜色
             case R.id.showcolor:
                 dialog_Text(4);
                 break;
+            // 确定
             case R.id.btn_sure:
-                switch ((int) commandconfig.get("type")) {
+                switch ((int) commandConfig.get("type")) {
+                    // 速度
                     case 0:
-                        if (!speed.getText().toString().equals("") && !mp3.getText().toString().equals("") && !outime.getText().toString().equals("")
-                                && !shownum.getText().toString().equals("") && !showcolor.getText().toString().equals("") && goallist != null && goallist.size() > 0) {
+                        if (!speed.getText().toString().equals("") && !mp3.getText().toString().equals("") && !outTime.getText().toString().equals("")
+                                && !showNum.getText().toString().equals("") && !showColor.getText().toString().equals("") && goalList != null && goalList.size() > 0) {
+                            // 修改速度
                             robotDBHelper.execSQL("update command set speed = '" + speed.getText().toString().trim() + "'," +
-                                    "music = '" + mp3.getText().toString().trim() + "' ,outime = '" + outime.getText().toString().trim() + "' ," +
-                                    "shownumber = '" + shownum.getText().toString().trim() + "' ,showcolor = '" + showcolor.getText().toString().trim() + "' where id= '" + command_id + "'");
+                                    "music = '" + mp3.getText().toString().trim() + "' ,outime = '" + outTime.getText().toString().trim() + "' ," +
+                                    "shownumber = '" + showNum.getText().toString().trim() + "' ,showcolor = '" + showColor.getText().toString().trim() + "' where id= '" + command_id + "'");
                             finish();
                         } else {
                             Toast.makeText(getApplicationContext(), "请选择确认好参数", Toast.LENGTH_SHORT).show();
                         }
                         break;
+                    // 站点
                     case 1:
-                        if (!speed.getText().toString().equals("") && !mp3.getText().toString().equals("") && !outime.getText().toString().equals("")
-                                && !shownum.getText().toString().equals("") && !showcolor.getText().toString().equals("")) {
+                        if (!speed.getText().toString().equals("") && !mp3.getText().toString().equals("") && !outTime.getText().toString().equals("")
+                                && !showNum.getText().toString().equals("") && !showColor.getText().toString().equals("")) {
+                            // 修改站点
                             robotDBHelper.execSQL("update command set goal= '" + 0 + "' ," +
                                     "direction = '" + 0 + "' ,speed = '" + speed.getText().toString().trim() + "'," +
-                                    "music = '" + mp3.getText().toString().trim() + "' ,outime = '" + outime.getText().toString().trim() + "' ," +
-                                    "shownumber = '" + shownum.getText().toString().trim() + "' ,showcolor = '" + showcolor.getText().toString().trim() + "' where id= '" + command_id + "'");
+                                    "music = '" + mp3.getText().toString().trim() + "' ,outime = '" + outTime.getText().toString().trim() + "' ," +
+                                    "shownumber = '" + showNum.getText().toString().trim() + "' ,showcolor = '" + showColor.getText().toString().trim() + "' where id= '" + command_id + "'");
                             finish();
                         } else {
                             Toast.makeText(getApplicationContext(), "请选择确认好参数", Toast.LENGTH_SHORT).show();
                         }
                         break;
+                    // 站点
                     case 2:
-                        if (!speed.getText().toString().equals("") && !mp3.getText().toString().equals("") && !outime.getText().toString().equals("")
-                                && !shownum.getText().toString().equals("") && !showcolor.getText().toString().equals("")) {
+                        if (!speed.getText().toString().equals("") && !mp3.getText().toString().equals("") && !outTime.getText().toString().equals("")
+                                && !showNum.getText().toString().equals("") && !showColor.getText().toString().equals("")) {
+                            // 修改站点
                             robotDBHelper.execSQL("update command set goal= '" + 0 + "' ," +
                                     "direction = '" + 0 + "' ,speed = '" + speed.getText().toString().trim() + "'," +
-                                    "music = '" + mp3.getText().toString().trim() + "' ,outime = '" + outime.getText().toString().trim() + "' ," +
-                                    "shownumber = '" + shownum.getText().toString().trim() + "' ,showcolor = '" + showcolor.getText().toString().trim() + "' where id= '" + command_id + "'");
+                                    "music = '" + mp3.getText().toString().trim() + "' ,outime = '" + outTime.getText().toString().trim() + "' ," +
+                                    "shownumber = '" + showNum.getText().toString().trim() + "' ,showcolor = '" + showColor.getText().toString().trim() + "' where id= '" + command_id + "'");
                             finish();
                         } else {
                             Toast.makeText(getApplicationContext(), "请选择确认好参数", Toast.LENGTH_SHORT).show();
                         }
                         break;
+                    // 站点
                     case 3:
-                        if (!mp3.getText().toString().equals("") && !outime.getText().toString().equals("")
-                                && !shownum.getText().toString().equals("") && !showcolor.getText().toString().equals("")) {
+                        if (!mp3.getText().toString().equals("") && !outTime.getText().toString().equals("")
+                                && !showNum.getText().toString().equals("") && !showColor.getText().toString().equals("")) {
+                            // 修改站点
                             robotDBHelper.execSQL("update command set goal= '" + 0 + "' ," +
                                     "direction = '" + 0 + "' ,speed = '" + 0 + "'," +
-                                    "music = '" + mp3.getText().toString().trim() + "' ,outime = '" + outime.getText().toString().trim() + "' ," +
-                                    "shownumber = '" + shownum.getText().toString().trim() + "' ,showcolor = '" + showcolor.getText().toString().trim() + "' where id= '" + command_id + "'");
+                                    "music = '" + mp3.getText().toString().trim() + "' ,outime = '" + outTime.getText().toString().trim() + "' ," +
+                                    "shownumber = '" + showNum.getText().toString().trim() + "' ,showcolor = '" + showColor.getText().toString().trim() + "' where id= '" + command_id + "'");
                             finish();
                         } else {
                             Toast.makeText(getApplicationContext(), "请选择确认好参数", Toast.LENGTH_SHORT).show();
@@ -270,60 +306,70 @@ public class CommandAcitivty extends Activity implements View.OnClickListener {
 
     private DeleteDialog dialog;
 
+    // 删除命令Dialog
     private void dialog() {
         dialog = new DeleteDialog(this);
+        // 确定删除
         dialog.setOnPositiveListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // 删除命令
                 robotDBHelper.execSQL("delete from command where id = '" + command_id + "'");
                 finish();
             }
         });
+        // 取消按钮
         dialog.setOnNegativeListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // 销毁Dialog
                 dialog.dismiss();
             }
         });
+        // 显示Dialog
         dialog.show();
     }
 
     private SpinnerDialog spinnerdialog;
     private SpinnerAdapter spinnerAdapter;
 
+    // 自定义运动到站点对话框
     private void dialog_spinner(final boolean gl) {
         spinnerdialog = new SpinnerDialog(this);
         if (gl) {
-            spinnerAdapter = new SpinnerAdapter(this, goallist, gl);
+            spinnerAdapter = new SpinnerAdapter(this, goalList, gl);
         } else {
             spinnerAdapter = new SpinnerAdapter(this, list, gl);
         }
+        // 加载适配器
         spinnerdialog.getListView().setAdapter(spinnerAdapter);
+        // 子列表点击事件
         spinnerdialog.getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (gl) {
-                    goalnum = position;
+                    goalNum = position;
                 } else {
-                    directionnum = position;
+                    directionNum = position;
                 }
                 spinnerAdapter.notifyDataSetChanged();
             }
         });
+        // 确定Dialog
         spinnerdialog.setOnPositiveListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (gl) {
-                    if (goallist != null && goallist.size() > 0 && goalnum != -1) {
-                        robotDBHelper.execSQL("update command set goal= '" + goallist.get(goalnum).get("id") + "' where id= '" + command_id + "'");
-                        goal.setText(goallist.get(goalnum).get("name").toString());
+                    if (goalList != null && goalList.size() > 0 && goalNum != -1) {
+                        robotDBHelper.execSQL("update command set goal= '" + goalList.get(goalNum).get("id") + "' where id= '" + command_id + "'");
+                        goal.setText(goalList.get(goalNum).get("name").toString());
                         spinnerdialog.dismiss();
                     } else {
                         Toast.makeText(getApplicationContext(), "请选择站点系统卡", Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    robotDBHelper.execSQL("update command set direction = '" + directionnum + "' where id= '" + command_id + "'");
-                    switch (directionnum) {
+                    robotDBHelper.execSQL("update command set direction = '" + directionNum + "' where id= '" + command_id + "'");
+                    switch (directionNum) {
                         case 0:
                             direction.setText("直行");
                             break;
@@ -338,90 +384,102 @@ public class CommandAcitivty extends Activity implements View.OnClickListener {
                 }
             }
         });
+        // 取消Dialog
         spinnerdialog.setOnNegativeListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // 销毁窗体
                 spinnerdialog.dismiss();
             }
         });
+        // 显示Dialog
         spinnerdialog.show();
     }
 
 
-    private MyDialog textdialog;
+    private MyDialog textDialog;
     private EditText editText;
 
     private void dialog_Text(final int type) {
-        textdialog = new MyDialog(this);
+        textDialog = new MyDialog(this);
+        // type=  0->速度  1->MP3通道  2->超时时间  3->显示编号  4->显示颜色
         switch (type) {
             case 0:
-                textdialog.getTitle().setText("速度修改");
-                textdialog.getTitleTemp().setText("请输入最新速度值");
+                textDialog.getTitle().setText("速度修改");
+                textDialog.getTitleTemp().setText("请输入最新速度值");
                 break;
             case 1:
-                textdialog.getTitle().setText("MP3通道修改");
-                textdialog.getTitleTemp().setText("请输入MP3通道");
+                textDialog.getTitle().setText("MP3通道修改");
+                textDialog.getTitleTemp().setText("请输入MP3通道");
                 break;
             case 2:
-                textdialog.getTitle().setText("超时时间修改");
-                textdialog.getTitleTemp().setText("请输入超时时间");
+                textDialog.getTitle().setText("超时时间修改");
+                textDialog.getTitleTemp().setText("请输入超时时间");
                 break;
             case 3:
-                textdialog.getTitle().setText("显示编号修改");
-                textdialog.getTitleTemp().setText("请输入显示编号");
+                textDialog.getTitle().setText("显示编号修改");
+                textDialog.getTitleTemp().setText("请输入显示编号");
                 break;
             case 4:
-                textdialog.getTitle().setText("显示颜色修改");
-                textdialog.getTitleTemp().setText("请输入显示颜色");
+                textDialog.getTitle().setText("显示颜色修改");
+                textDialog.getTitleTemp().setText("请输入显示颜色");
                 break;
         }
-        editText = (EditText) textdialog.getEditText();
+        editText = (EditText) textDialog.getEditText();
+        // 输入类型为数字文本
         editText.setInputType(InputType.TYPE_CLASS_NUMBER);
-        textdialog.setOnPositiveListener(new View.OnClickListener() {
+        // 确定Dialog
+        textDialog.setOnPositiveListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // 修改数据库 type=  0->修改速度  1->修改MP3通道  2->修改超时时间  3->修改显示编号  4->修改显示颜色
                 switch (type) {
+                    // 修改速度
                     case 0:
                         if (!editText.getText().toString().trim().equals("")) {
                             robotDBHelper.execSQL("update command set speed = '" + editText.getText().toString().trim() + "' where id= '" + command_id + "'");
-                            textdialog.dismiss();
+                            textDialog.dismiss();
                             speed.setText(editText.getText().toString().trim());
                         } else {
                             Toast.makeText(getApplicationContext(), "请输入参数", Toast.LENGTH_SHORT).show();
                         }
                         break;
+                    // 修改MP3通道
                     case 1:
                         if (!editText.getText().toString().trim().equals("")) {
                             robotDBHelper.execSQL("update command set music = '" + editText.getText().toString().trim() + "' where id= '" + command_id + "'");
-                            textdialog.dismiss();
+                            textDialog.dismiss();
                             mp3.setText(editText.getText().toString().trim());
                         } else {
                             Toast.makeText(getApplicationContext(), "请输入参数", Toast.LENGTH_SHORT).show();
                         }
                         break;
+                    // 修改超时时间
                     case 2:
                         if (!editText.getText().toString().trim().equals("")) {
                             robotDBHelper.execSQL("update command set outime = '" + editText.getText().toString().trim() + "' where id= '" + command_id + "'");
-                            textdialog.dismiss();
-                            outime.setText(editText.getText().toString().trim());
+                            textDialog.dismiss();
+                            outTime.setText(editText.getText().toString().trim());
                         } else {
                             Toast.makeText(getApplicationContext(), "请输入参数", Toast.LENGTH_SHORT).show();
                         }
                         break;
+                    // 修改显示编号
                     case 3:
                         if (!editText.getText().toString().trim().equals("")) {
                             robotDBHelper.execSQL("update command set shownumber = '" + editText.getText().toString().trim() + "' where id= '" + command_id + "'");
-                            textdialog.dismiss();
-                            shownum.setText(editText.getText().toString().trim());
+                            textDialog.dismiss();
+                            showNum.setText(editText.getText().toString().trim());
                         } else {
                             Toast.makeText(getApplicationContext(), "请输入参数", Toast.LENGTH_SHORT).show();
                         }
                         break;
+                    // 修改显示颜色
                     case 4:
                         if (!editText.getText().toString().trim().equals("")) {
                             robotDBHelper.execSQL("update command set showcolor = '" + editText.getText().toString().trim() + "' where id= '" + command_id + "'");
-                            textdialog.dismiss();
-                            showcolor.setText(editText.getText().toString().trim());
+                            textDialog.dismiss();
+                            showColor.setText(editText.getText().toString().trim());
                         } else {
                             Toast.makeText(getApplicationContext(), "请输入参数", Toast.LENGTH_SHORT).show();
                         }
@@ -429,12 +487,15 @@ public class CommandAcitivty extends Activity implements View.OnClickListener {
                 }
             }
         });
-        textdialog.setOnNegativeListener(new View.OnClickListener() {
+        // 取消Dialog
+        textDialog.setOnNegativeListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                textdialog.dismiss();
+                // 销毁窗体
+                textDialog.dismiss();
             }
         });
-        textdialog.show();
+        // 显示Dialog
+        textDialog.show();
     }
 }

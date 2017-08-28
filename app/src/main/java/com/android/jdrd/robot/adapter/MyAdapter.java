@@ -10,9 +10,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.android.jdrd.robot.R;
-import com.android.jdrd.robot.activity.CommandAcitivty;
-import com.android.jdrd.robot.activity.DeskConfigPathAcitivty;
-import com.android.jdrd.robot.activity.MainActivity;
+import com.android.jdrd.robot.activity.CommandActivity;
 import com.android.jdrd.robot.util.Constant;
 
 import java.util.List;
@@ -66,7 +64,7 @@ public class MyAdapter extends BaseAdapter {
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, CommandAcitivty.class);
+                Intent intent = new Intent(context, CommandActivity.class);
                 Constant.debugLog("commandid" + list.get(position).get("id").toString());
                 intent.putExtra("id", (Integer) list.get(position).get("id"));
                 context.startActivity(intent);

@@ -170,7 +170,7 @@ public class ServerSocketUtil extends Service {
             //截取IP地址
             final String ip = str.substring(1, str.length());
             //打印IP地址
-            Constant.debugLog("本机IP地址为----->" + ip);
+            Constant.debugLog("连接客户端的IP为:----->" + ip);
             //子线程更新UI  调用Looper.getMainLooper()
             Handler handler = new Handler(Looper.getMainLooper());
             handler.post(new Runnable() {
@@ -259,25 +259,30 @@ public class ServerSocketUtil extends Service {
                     Constant.debugLog(socketList.get(j).get("ip") + "socketlist.get(j).get(\"ip\")" + ip + "ip");
                     if (socketList.get(j).get("ip").equals(ip)) {
                         try {
+                            // 打印Log
                             Constant.debugLog("inClose");
                             ((InputStream) socketList.get(j).get("in")).close();
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
                         try {
+                            // 打印Log
                             Constant.debugLog("socketClose");
                             ((Socket) socketList.get(j).get("socket")).close();
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
                         socketList.remove(j);
+                        // 打印Log
                         Constant.debugLog("socketList----->" + socketList.toString());
                         break;
                     }
                     j++;
+                    // 打印Log
                     Constant.debugLog("j socketList----->" + j);
                 }
             }
+            // 传递数据 以键值对的形式
             Map<String, Object> map;
             map = new HashMap<>();
             map.put("socket", socket);
@@ -308,7 +313,7 @@ public class ServerSocketUtil extends Service {
                 removeSocket(ip);
             }
             len1++;
-            Constant.debugLog("buf内容：" + buf + "len1" + len1);
+            Constant.debugLog("buf内容----->" + buf + "len1----->" + len1);
             if (-1 == buf) {
                 //移除Socket
                 removeSocket(ip);
@@ -328,14 +333,14 @@ public class ServerSocketUtil extends Service {
                 i++;
             } else if (flag == false && flag2) {
                 msg = new String(buffer, 1, i);
-                //去空格
+                // 去空格
                 msg = msg.trim();
                 if (msg != null) {
                     ++len;
-                    //打印日志
+                    // 打印日志
                     Constant.debugLog("msg的内容----->" + msg + "  次数：" + len);
                     byte[] bytes = msg.getBytes();
-                    //打印日志
+                    // 打印日志
                     Constant.debugLog(bytes[0] + "bytes");
                     flag = false;
                     List<String> str = new ArrayList<>();
@@ -352,9 +357,9 @@ public class ServerSocketUtil extends Service {
                         }
                     }
                     if (Integer.valueOf(str.get(str.size() - 1)) == msg.length() + 2) {
-                        Constant.debugLog("长度正确");
+                        Constant.debugLog("=====长度正确=====");
                         switch (bytes[0]) {
-                            //电量
+                            // 电量
                             case 97:
                                 robotDBHelper.execSQL("update robot set electric = '" + str.get(0) + "' where ip= '" + ip + "'");
                                 sendBroadcastRobot("robot");
@@ -368,7 +373,7 @@ public class ServerSocketUtil extends Service {
                                     }
                                 }
                                 break;
-                            //运动状态   0->直行前进  1->左转   2->右转   3->旋转
+                            // 运动状态   0->直行前进  1->左转   2->右转   3->旋转
                             case 98:
                                 robotDBHelper.execSQL("update robot set state = '" + str.get(0) + "' where ip= '" + ip + "'");
                                 sendBroadcastRobot("robot");
@@ -382,7 +387,7 @@ public class ServerSocketUtil extends Service {
                                     }
                                 }
                                 break;
-                            //机器人状态  0->空闲   0->送餐   0->故障
+                            // 机器人状态  0->空闲   0->送餐   0->故障
                             case 99:
                                 robotDBHelper.execSQL("update robot set robotstate = '" + str.get(0) + "' where ip= '" + ip + "'");
                                 sendBroadcastRobot("robot");
@@ -396,7 +401,7 @@ public class ServerSocketUtil extends Service {
                                     }
                                 }
                                 break;
-                            //障碍物
+                            // 障碍物
                             case 100:
                                 robotDBHelper.execSQL("update robot set obstacle = '" + str.get(0) + "' where ip= '" + ip + "'");
                                 sendBroadcastRobot("robot");
@@ -410,7 +415,7 @@ public class ServerSocketUtil extends Service {
                                     }
                                 }
                                 break;
-                            //最后坐标
+                            // 最后坐标
                             case 101:
                                 robotDBHelper.execSQL("update robot set lastlocation = '" + str.get(0) + "' where ip= '" + ip + "'");
                                 sendBroadcastRobot("robot");
@@ -424,7 +429,7 @@ public class ServerSocketUtil extends Service {
                                     }
                                 }
                                 break;
-                            //接收应答   0成功   1命令校验失败
+                            // 接收应答   0成功   1命令校验失败
                             case 114:
                                 if (str.get(0).equals("0")) {
                                     sendBroadcastMain("robot_receive_succus");
@@ -434,7 +439,7 @@ public class ServerSocketUtil extends Service {
                                 break;
                         }
                     } else {
-                        //打印日志
+                        // 打印日志
                         Constant.debugLog("长度不对");
                         if (out != null) {
                             string = "*r+1+8+#";
@@ -454,9 +459,9 @@ public class ServerSocketUtil extends Service {
                     flag2 = false;
                 }
             } else {
-                //打印日志
+                // 打印日志
                 Constant.debugLog((char) buf + "");
-                Constant.debugLog("数据格式不对");
+                Constant.debugLog("=====数据格式不对=====");
                 string = "*r+1+8+#";
                 try {
                     out.write(string.getBytes());

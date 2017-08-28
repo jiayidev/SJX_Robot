@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.jdrd.robot.R;
-import com.android.jdrd.robot.activity.CommandAcitivty;
+import com.android.jdrd.robot.activity.CommandActivity;
 
 import java.util.List;
 import java.util.Map;
@@ -62,11 +62,11 @@ public class SpinnerAdapter extends BaseAdapter {
         }
         viewHolder.imageview.setVisibility(View.GONE);
         if (flag) {
-            if (position == CommandAcitivty.goalnum) {
+            if (position == CommandActivity.goalNum) {
                 viewHolder.imageview.setVisibility(View.VISIBLE);
             }
         } else {
-            if (position == CommandAcitivty.directionnum) {
+            if (position == CommandActivity.directionNum) {
                 viewHolder.imageview.setVisibility(View.VISIBLE);
             }
         }
