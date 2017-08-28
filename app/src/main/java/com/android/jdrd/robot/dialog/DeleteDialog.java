@@ -1,10 +1,5 @@
 package com.android.jdrd.robot.dialog;
 
-/*
- * Created by Administrator on 2017/2/16.
- * text for Map
- */
-
 import android.app.Dialog;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -33,7 +28,11 @@ public class DeleteDialog extends Dialog {
         setCustomDialog();
     }
 
+    /**
+     * 初始化
+     */
     private void setCustomDialog() {
+        // 加载布局
         View mView = LayoutInflater.from(getContext()).inflate(R.layout.fragment_delete_dialog,null);
         title = (TextView) mView.findViewById(R.id.title);
         title_template = (TextView) mView.findViewById(R.id.title_template);
@@ -49,6 +48,7 @@ public class DeleteDialog extends Dialog {
     public TextView getTextView(){
         return title;
     }
+    // 内容
     public TextView getTemplate(){
         return title_template;
     }

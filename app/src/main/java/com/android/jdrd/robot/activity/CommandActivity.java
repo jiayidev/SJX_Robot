@@ -68,25 +68,35 @@ public class CommandActivity extends Activity implements View.OnClickListener {
         Log.e("commandList----->", command_id + "");
 
         // 初始化控件
+        // 站点
         goal = (TextView) findViewById(R.id.goal);
-        direction = (TextView) findViewById(R.id.direction);
         goal.setOnClickListener(this);
+        // 方向
+        direction = (TextView) findViewById(R.id.direction);
         direction.setOnClickListener(this);
+        // 编辑页面 速度
         speed = (TextView) findViewById(R.id.speed);
         speed.setOnClickListener(this);
+        // 编辑页面 MP3通道
         mp3 = (TextView) findViewById(R.id.mp3);
         mp3.setOnClickListener(this);
+        // 编辑页面 超时时间
         outTime = (TextView) findViewById(R.id.outime);
         outTime.setOnClickListener(this);
+        // 编辑页面 显示编号
         showNum = (TextView) findViewById(R.id.shownum);
         showNum.setOnClickListener(this);
+        // 编辑页面 显示颜色
         showColor = (TextView) findViewById(R.id.showcolor);
         showColor.setOnClickListener(this);
+        // 编辑页面 左侧删除按钮
         findViewById(R.id.btn_delete).setOnClickListener(this);
+        // 编辑页面 返回按钮
         findViewById(R.id.setting_back).setOnClickListener(this);
+        // 编辑页面 返回按钮
         findViewById(R.id.back).setOnClickListener(this);
 
-        // 查询ID卡
+        // 查询ID卡列表
         goalList = robotDBHelper.queryListMap("select * from card ", null);
 
         // 存储map的数据

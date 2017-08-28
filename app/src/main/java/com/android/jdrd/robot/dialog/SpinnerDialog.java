@@ -1,10 +1,5 @@
 package com.android.jdrd.robot.dialog;
 
-/*
- * Created by Administrator on 2017/2/16.
- * text for Map
- */
-
 import android.app.Dialog;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -36,7 +31,11 @@ public class SpinnerDialog extends Dialog {
         setCustomDialog();
     }
 
+    /**
+     * 初始化
+     */
     private void setCustomDialog() {
+        // 加载布局
         View mView = LayoutInflater.from(getContext()).inflate(R.layout.fragment_spinner_dialog, null);
         title = (TextView) mView.findViewById(R.id.title);
         listView = (ListView) mView.findViewById(R.id.listview);
@@ -45,6 +44,7 @@ public class SpinnerDialog extends Dialog {
         super.setContentView(mView);
     }
 
+    // ListView列表
     public ListView getListView() {
         return listView;
     }

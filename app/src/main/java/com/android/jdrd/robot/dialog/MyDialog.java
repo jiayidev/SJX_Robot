@@ -1,10 +1,5 @@
 package com.android.jdrd.robot.dialog;
 
-/*
- * Created by Administrator on 2017/2/16.
- * text for Map
- */
-
 import android.app.Dialog;
 import android.content.Context;
 import android.support.v4.media.RatingCompat;
@@ -33,6 +28,9 @@ public class MyDialog extends Dialog {
         setCustomDialog();
     }
 
+    /**
+     * 初始化
+     */
     private void setCustomDialog() {
         View mView = LayoutInflater.from(getContext()).inflate(R.layout.fragment_dialog,null);
         title = (TextView) mView.findViewById(R.id.title);
@@ -43,15 +41,19 @@ public class MyDialog extends Dialog {
         super.setContentView(mView);
     }
 
+    //输入框
     public View getEditText(){
         return editText;
     }
+    // 标题
     public TextView getTitle(){
         return title;
     }
+    // 内容
     public TextView getTitleTemp(){
         return title_template;
     }
+    // 确定
     public View getNegative(){
         return negativeButton;
     }
