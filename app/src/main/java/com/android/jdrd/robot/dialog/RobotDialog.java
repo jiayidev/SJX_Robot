@@ -48,6 +48,9 @@ public class RobotDialog extends Dialog {
     public static int CurrentIndex = -1;
     // 发送数据
     private static String sendStr;
+    public static byte[] data;
+
+
     // IP地址
     public static String IP;
     // 创建线程
@@ -61,6 +64,16 @@ public class RobotDialog extends Dialog {
         this.sendStr = str;
         flag = false;
     }
+
+    public RobotDialog(Context context, byte[] data) {
+        super(context, R.style.SoundRecorder);
+        setCustomDialog();
+        this.context = context;
+        this.data = data;
+        flag = false;
+
+    }
+
 
     public RobotDialog(Context context, List<Map> robotList) {
         super(context, R.style.SoundRecorder);
@@ -137,7 +150,8 @@ public class RobotDialog extends Dialog {
                         dismiss();
                     } else {
                         // 发送命令
-                        sendCommand();
+                        //sendCommand();
+                        btSendBytes();
                         // 销毁当前Dialog
                         dismiss();
                     }
@@ -159,6 +173,27 @@ public class RobotDialog extends Dialog {
                         if (out != null) {
                             try {
                                 out.write(sendStr.getBytes());
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                });
+                thread.start();
+            }
+        }
+    }
+
+    public void btSendBytes() {
+        for (Map map : ServerSocketUtil.socketList) {
+            if (map.get("ip").equals(IP)) {
+                final OutputStream out = (OutputStream) map.get("out");
+                thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (out != null) {
+                            try {
+                                out.write(data);
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
@@ -254,6 +289,7 @@ public class RobotDialog extends Dialog {
 
     /**
      * 发送命令格式
+     *
      * @param out 输出流
      * @param str 发送内容
      */

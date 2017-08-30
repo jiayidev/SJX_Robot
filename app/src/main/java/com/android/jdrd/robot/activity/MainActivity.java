@@ -27,6 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.jdrd.robot.R;
+import com.android.jdrd.robot.Test.Protocol;
 import com.android.jdrd.robot.adapter.AreaAdapter;
 import com.android.jdrd.robot.adapter.DeskAdapter;
 import com.android.jdrd.robot.adapter.GridViewAdapter;
@@ -424,6 +425,8 @@ public class MainActivity extends Activity implements View.OnClickListener, Anim
             // 前进命令
             case R.id.up:
                 robotDialog("*u+6+#");
+                // 发送命令
+                //robotDialog(Protocol.getSendData(16, Protocol.getCommandData(Protocol.MN_PATTERN)));
                 break;
             // 后退命令
             case R.id.down:
@@ -836,6 +839,16 @@ public class MainActivity extends Activity implements View.OnClickListener, Anim
 
     private void robotDialog(String str) {
         robotDialog = new RobotDialog(this, str);
+        robotDialog.show();
+    }
+
+    /**
+     * 测试
+     *
+     * @param data 数据
+     */
+    private void robotDialog(byte[] data) {
+        robotDialog = new RobotDialog(this, data);
         robotDialog.show();
     }
 
