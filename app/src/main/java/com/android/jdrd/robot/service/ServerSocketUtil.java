@@ -14,6 +14,7 @@ import android.support.v7.app.NotificationCompat;
 import android.widget.Toast;
 
 import com.android.jdrd.robot.R;
+import com.android.jdrd.robot.Test.Protocol;
 import com.android.jdrd.robot.helper.RobotDBHelper;
 import com.android.jdrd.robot.util.Constant;
 
@@ -109,6 +110,8 @@ public class ServerSocketUtil extends Service {
 
             //开启线程
             new Thread(new Task(socket)).start();
+
+            btSendBytes(Protocol.getSendData(16, Protocol.getCommandData(Protocol.MN_PATTERN)), socket);
         }
     }
 
@@ -154,6 +157,49 @@ public class ServerSocketUtil extends Service {
         }
     }
 
+    /**
+     * 测试
+     */
+    public void btSendBytes(byte[] data, String ip, Socket socket) throws IOException {
+        try {
+            if (socket.isClosed()) {
+
+            } else {
+                //获取输出流
+                out = socket.getOutputStream();
+                if (ip != null) {
+                    if (out != null) {
+                        //写入数据
+                        out.write(data);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 发送数据
+     */
+
+    public void btSendBytes(byte[] data, Socket socket) throws IOException {
+        try {
+            if (socket.isClosed()) {
+
+            } else {
+                //获取输出流
+                out = socket.getOutputStream();
+                if (out != null) {
+                    //写入数据
+                    out.write(data);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     //创建Task线程
     class Task implements Runnable {
         private Socket socket;
@@ -181,7 +227,7 @@ public class ServerSocketUtil extends Service {
             });
 
             boolean IsHave = false;
-            //查询机器人
+            //查询机器人列表
             List<Map> robotList = robotDBHelper.queryListMap("select * from robot ", null);
             if (robotList != null && robotList.size() > 0) {
                 for (int i = 0, size = robotList.size(); i < size; i++) {
@@ -218,7 +264,17 @@ public class ServerSocketUtil extends Service {
                                 break;
                             } else {
                                 //发送心跳包    用于测试服务端与客户端是否在连接状态 每隔3秒发送一次
-                                sendDateToClient("*heartbeat#", socket_ip, socket_cache);
+                                //sendDateToClient("*heartbeat#", socket_ip, socket_cache);
+
+                                //发送命令测试
+                                // 设置成磁导航模式
+                                //btSendBytes(Protocol.getSendData(16, Protocol.getCommandData(Protocol.MN_Pattern)), socket_ip, socket_cache);
+                                // 设置成脱轨运行模式
+                                //btSendBytes(Protocol.getSendData(16, Protocol.getCommandData(Protocol.MN_Pattern_Function)), socket_ip, socket_cache);
+                                // 设置前进速度为500
+                                //btSendBytes(Protocol.getSendData(Protocol.UP_SPEED, Protocol.getCommandData(Protocol.UP_SPEED)), socket_ip, socket_cache);
+                                // 清除故障
+                                //btSendBytes(Protocol.getSendData(Protocol.CLEAR_FAULT, Protocol.getCommandData(Protocol.CLEAR_FAULT)), socket_ip, socket_cache);
                                 Thread.sleep(3000);
                             }
                         } catch (Exception e) {
@@ -234,6 +290,13 @@ public class ServerSocketUtil extends Service {
                             }
                         }
                     }
+
+                    try {
+                        btSendBytes(Protocol.getSendData(16, Protocol.getCommandData(Protocol.MN_PATTERN)), socket_ip, socket_cache);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
                 }
             }).start();
 
@@ -256,7 +319,7 @@ public class ServerSocketUtil extends Service {
                 Constant.debugLog("IsHAVE----->" + socketList.size());
                 while (j < socketList.size()) {
                     //打印日志
-                    Constant.debugLog(socketList.get(j).get("ip") + "socketlist.get(j).get(\"ip\")" + ip + "ip");
+                    Constant.debugLog(socketList.get(j).get("ip") + "<---------->" + ip + "ip");
                     if (socketList.get(j).get("ip").equals(ip)) {
                         try {
                             // 打印Log
@@ -313,7 +376,7 @@ public class ServerSocketUtil extends Service {
                 removeSocket(ip);
             }
             len1++;
-            Constant.debugLog("buf内容----->" + buf + "len1----->" + len1);
+            Constant.debugLog("buf内容----->" + buf + "\t\t\tlen1----->" + len1);
             if (-1 == buf) {
                 //移除Socket
                 removeSocket(ip);
@@ -338,7 +401,7 @@ public class ServerSocketUtil extends Service {
                 if (msg != null) {
                     ++len;
                     // 打印日志
-                    Constant.debugLog("msg的内容----->" + msg + "  次数：" + len);
+                    Constant.debugLog("msg的内容----->" + msg + "\t\t\t次数：" + len);
                     byte[] bytes = msg.getBytes();
                     // 打印日志
                     Constant.debugLog(bytes[0] + "bytes");
@@ -357,6 +420,7 @@ public class ServerSocketUtil extends Service {
                         }
                     }
                     if (Integer.valueOf(str.get(str.size() - 1)) == msg.length() + 2) {
+                        // 打印Log
                         Constant.debugLog("=====长度正确=====");
                         switch (bytes[0]) {
                             // 电量

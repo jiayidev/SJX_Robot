@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.android.jdrd.robot">
 
-    <!--权限管理-->
+    <!-- 权限管理 -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -44,41 +44,50 @@
             <!-- android:screenOrientation="portrait" -->
             <!-- &gt; -->
         </activity>
+        <!-- 设置指令 -->
         <activity
             android:name=".activity.DeskConfigPathActivity"
             android:windowSoftInputMode="stateHidden|stateAlwaysHidden" />
+        <!-- 机器人编辑页面 -->
         <activity
             android:name=".activity.RobotConfigActivity"
             android:windowSoftInputMode="stateHidden|stateAlwaysHidden" />
+        <!-- 机器人状态 -->
         <activity
             android:name=".activity.RobotActivity"
             android:windowSoftInputMode="stateHidden|stateAlwaysHidden" />
+        <!-- 编辑命令 -->
         <activity
             android:name=".activity.CommandActivity"
             android:windowSoftInputMode="stateHidden|stateAlwaysHidden" />
+        <!-- 系统卡列表 -->
         <activity
             android:name=".activity.CardConfig"
             android:windowSoftInputMode="stateHidden|stateAlwaysHidden" />
+        <!-- 系统卡编辑页面 -->
         <activity
             android:name=".activity.CardConfigActivity"
             android:windowSoftInputMode="stateHidden|stateAlwaysHidden" />
+        <!-- 系统卡列表 -->
         <activity
             android:name=".activity.AreaConfig"
             android:windowSoftInputMode="stateHidden|stateAlwaysHidden" />
 
+        <!-- 静态IP服务 -->
         <service
             android:name=".service.SetStaticIPService"
             android:enabled="true"
             android:exported="true" />
+        <!-- 服务端服务 -->
         <service
             android:name=".service.ServerSocketUtil"
             android:enabled="true"
             android:exported="true" />
+        <!-- 客户端服务 -->
         <service
             android:name=".service.ClientSocketUtil"
             android:enabled="true"
             android:exported="true" />
-
     </application>
 
 </manifest>

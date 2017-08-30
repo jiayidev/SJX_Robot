@@ -9,7 +9,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -133,6 +132,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Anim
         // 启动后台通讯服务
         Intent serverSocket = new Intent(this, ServerSocketUtil.class);
         startService(serverSocket);
+
         // 初始化数据库
         robotDBHelper = RobotDBHelper.getInstance(getApplicationContext());
 
@@ -937,4 +937,6 @@ public class MainActivity extends Activity implements View.OnClickListener, Anim
         } else {
         }
     }
+
+
 }
