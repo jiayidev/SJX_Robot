@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="#EEEEEE"
-    tools:context="com.android.jdrd.robot.activity.MainActivity">
+    tools:context="com.android.jdrd.robot.activity.SJX_MainActivity">
     <RelativeLayout
         android:id="@+id/main"
         android:background="@color/green"

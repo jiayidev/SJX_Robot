@@ -25,7 +25,7 @@ import net.qiujuer.genius.ui.compat.UiCompat;
  * 时间: 2017/7/27
  * 描述: 闪屏页
  */
-public class LaunchActivity extends AppCompatActivity {
+public class SJX_LaunchActivity extends AppCompatActivity {
     // Drawable
     private ColorDrawable mBgDrawable;
 
@@ -37,7 +37,7 @@ public class LaunchActivity extends AppCompatActivity {
         // 隐藏状态栏
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.activity_launch);
+        setContentView(R.layout.sjx_activity_launch);
         //初始化
         initWidget();
         initData();
@@ -78,7 +78,7 @@ public class LaunchActivity extends AppCompatActivity {
      * 真实的跳转
      */
     private void reallySkip() {
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, SJX_MainActivity.class);
         startActivity(intent);
         finish();
 
@@ -112,14 +112,14 @@ public class LaunchActivity extends AppCompatActivity {
     }
 
 
-    private final Property<LaunchActivity, Object> property = new Property<LaunchActivity, Object>(Object.class, "color") {
+    private final Property<SJX_LaunchActivity, Object> property = new Property<SJX_LaunchActivity, Object>(Object.class, "color") {
         @Override
-        public void set(LaunchActivity object, Object value) {
+        public void set(SJX_LaunchActivity object, Object value) {
             object.mBgDrawable.setColor((Integer) value);
         }
 
         @Override
-        public Object get(LaunchActivity object) {
+        public Object get(SJX_LaunchActivity object) {
             return object.mBgDrawable.getColor();
         }
     };

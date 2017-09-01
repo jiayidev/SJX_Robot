@@ -9,24 +9,26 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.jdrd.robot.R;
-import com.android.jdrd.robot.activity.AreaConfig;
+import com.android.jdrd.robot.activity.SJX_CommandActivity;
 
 import java.util.List;
 import java.util.Map;
 
+
 /**
  * 作者: jiayi.zhang
- * 时间: 2017/8/9
- * 描述:  区域名称适配器
+ * 时间: 2017/8/8
+ * 描述: 区域名称适配器
  */
-
-public class AreaConfigAdapter extends BaseAdapter {
+public class SJX_SpinnerAdapter extends BaseAdapter {
     Context context;
     List<Map> list;
+    boolean flag;
 
-    public AreaConfigAdapter(Context _context, List<Map> _list) {
+    public SJX_SpinnerAdapter(Context _context, List<Map> _list, boolean flag) {
         this.list = _list;
         this.context = _context;
+        this.flag = flag;
     }
 
     /**
@@ -77,21 +79,27 @@ public class AreaConfigAdapter extends BaseAdapter {
             // 根据context上下文加载布局，这里的是AreaAdapter本身，即this
             final LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.listview_card, null);
-            viewHolder = new ViewHolder();
+            convertView = inflater.inflate(R.layout.sjx_listview_card, null);
             // 根据自定义的Item布局加载布局
+            viewHolder = new ViewHolder();
             viewHolder.text = (TextView) convertView.findViewById(R.id.text);
             viewHolder.imageview = (ImageView) convertView.findViewById(R.id.imageview);
             // 将设置好的布局保存到缓存中，并将其设置在Tag里，以便后面方便取出Tag
             convertView.setTag(viewHolder);
-
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
-        viewHolder.text.setText(list.get(position).get("name").toString());
-        if (position == AreaConfig.Current_position) {
-            viewHolder.imageview.setVisibility(View.VISIBLE);
+        viewHolder.imageview.setVisibility(View.GONE);
+        if (flag) {
+            if (position == SJX_CommandActivity.goalNum) {
+                viewHolder.imageview.setVisibility(View.VISIBLE);
+            }
+        } else {
+            if (position == SJX_CommandActivity.directionNum) {
+                viewHolder.imageview.setVisibility(View.VISIBLE);
+            }
         }
+        viewHolder.text.setText(list.get(position).get("name").toString());
         return convertView;
     }
 

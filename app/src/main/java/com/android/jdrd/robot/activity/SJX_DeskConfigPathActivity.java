@@ -23,9 +23,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.jdrd.robot.R;
-import com.android.jdrd.robot.adapter.MyAdapter;
-import com.android.jdrd.robot.dialog.DeleteDialog;
-import com.android.jdrd.robot.dialog.MyDialog;
+import com.android.jdrd.robot.adapter.SJX_MyAdapter;
+import com.android.jdrd.robot.dialog.SJX_DeleteDialog;
+import com.android.jdrd.robot.dialog.SJX_MyDialog;
 import com.android.jdrd.robot.helper.RobotDBHelper;
 import com.android.jdrd.robot.util.Constant;
 
@@ -39,7 +39,7 @@ import java.util.Map;
  * 描述: 设置指令
  */
 
-public class DeskConfigPathActivity extends Activity implements View.OnClickListener {
+public class SJX_DeskConfigPathActivity extends Activity implements View.OnClickListener {
     // 初始化数据库帮助类
     private RobotDBHelper robotDBHelper;
     // 桌面ID
@@ -59,7 +59,7 @@ public class DeskConfigPathActivity extends Activity implements View.OnClickList
     private TextView[] titles;
 
     // Tab2 已有指令
-    private MyAdapter myAdapter;
+    private SJX_MyAdapter SJXMyAdapter;
     // Tab下标指示器
     private ImageView cursorIv;
     // 可滑动
@@ -88,7 +88,7 @@ public class DeskConfigPathActivity extends Activity implements View.OnClickList
         // 隐藏状态栏
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.activity_config);
+        setContentView(R.layout.sjx_activity_config);
 
         //初始化数据库
         robotDBHelper = RobotDBHelper.getInstance(getApplicationContext());
@@ -153,21 +153,21 @@ public class DeskConfigPathActivity extends Activity implements View.OnClickList
 
         listViews = new ArrayList<>();
         // 加载tab_01 布局
-        listViews.add(this.getLayoutInflater().inflate(R.layout.tab_01, null));
+        listViews.add(this.getLayoutInflater().inflate(R.layout.sjx_tab_01, null));
         // 加载tab_02 布局
-        View view = this.getLayoutInflater().inflate(R.layout.tab_02, null);
+        View view = this.getLayoutInflater().inflate(R.layout.sjx_tab_02, null);
         // 初始化ListView
         commandListView = (ListView) view.findViewById(R.id.added_command);
-        // 初始化 MyAdapter
-        myAdapter = new MyAdapter(this, command_list);
+        // 初始化 SJX_MyAdapter
+        SJXMyAdapter = new SJX_MyAdapter(this, command_list);
         // 加载适配器
-        commandListView.setAdapter(myAdapter);
+        commandListView.setAdapter(SJXMyAdapter);
         // ListView子列表点击事件
         commandListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // 跳转到 CommandActivity 并传递数据  id
-                Intent intent = new Intent(DeskConfigPathActivity.this, CommandActivity.class);
+                // 跳转到 SJX_CommandActivity 并传递数据  id
+                Intent intent = new Intent(SJX_DeskConfigPathActivity.this, SJX_CommandActivity.class);
                 // 打印Log
                 Constant.debugLog("commandId----->" + command_list.get(position).get("id").toString());
                 intent.putExtra("id", (Integer) command_list.get(position).get("id"));
@@ -263,7 +263,7 @@ public class DeskConfigPathActivity extends Activity implements View.OnClickList
         // 查询命令列表
         List<Map> list = robotDBHelper.queryListMap("select * from command where desk = '" + deskId + "'", null);
         command_list.addAll(list);
-        myAdapter.notifyDataSetChanged();
+        SJXMyAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -291,7 +291,7 @@ public class DeskConfigPathActivity extends Activity implements View.OnClickList
             // 编辑系统卡
             case R.id.card:
                 // 跳转到系统卡页面CardConfig
-                startActivity(new Intent(DeskConfigPathActivity.this, CardConfig.class));
+                startActivity(new Intent(SJX_DeskConfigPathActivity.this, SJX_CardConfig.class));
                 break;
             // 返回
             case R.id.setting_back:
@@ -343,11 +343,11 @@ public class DeskConfigPathActivity extends Activity implements View.OnClickList
         }
     }
 
-    private DeleteDialog dialog;
+    private SJX_DeleteDialog dialog;
 
     // 删除Dialog
     private void dialog() {
-        dialog = new DeleteDialog(this);
+        dialog = new SJX_DeleteDialog(this);
         // 确定Dialog
         dialog.setOnPositiveListener(new View.OnClickListener() {
             @Override
@@ -369,12 +369,12 @@ public class DeskConfigPathActivity extends Activity implements View.OnClickList
         dialog.show();
     }
 
-    private MyDialog textDialog;
+    private SJX_MyDialog textDialog;
     private EditText editText;
     private TextView title;
 
     private void dialog_Text() {
-        textDialog = new MyDialog(this);
+        textDialog = new SJX_MyDialog(this);
         editText = (EditText) textDialog.getEditText();
         textDialog.getTitle().setText("桌名修改");
         textDialog.getTitleTemp().setText("请输入新桌名");

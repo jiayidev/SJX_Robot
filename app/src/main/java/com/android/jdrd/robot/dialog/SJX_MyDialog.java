@@ -15,15 +15,14 @@ import com.android.jdrd.robot.R;
 /**
  * 作者: jiayi.zhang
  * 时间: 2017/8/8
- * 描述:自定义删除指令对话框
+ * 描述: 自定义区域对话框
  */
-public class DeleteDialog extends Dialog {
+public class SJX_MyDialog extends Dialog {
     private EditText editText;
     private Button positiveButton, negativeButton;
-    private TextView title;
-    private TextView title_template;
+    private TextView title,title_template;
 
-    public DeleteDialog(Context context) {
+    public SJX_MyDialog(Context context) {
         super(context, R.style.SoundRecorder);
         setCustomDialog();
     }
@@ -32,26 +31,28 @@ public class DeleteDialog extends Dialog {
      * 初始化
      */
     private void setCustomDialog() {
-        // 加载布局
-        View mView = LayoutInflater.from(getContext()).inflate(R.layout.fragment_delete_dialog,null);
+        View mView = LayoutInflater.from(getContext()).inflate(R.layout.sjx_fragment_dialog,null);
         title = (TextView) mView.findViewById(R.id.title);
-        title_template = (TextView) mView.findViewById(R.id.title_template);
         editText = (EditText) mView.findViewById(R.id.editText);
         positiveButton = (Button) mView.findViewById(R.id.positiveButton);
         negativeButton = (Button) mView.findViewById(R.id.negativeButton);
+        title_template = (TextView) mView.findViewById(R.id.title_template);
         super.setContentView(mView);
     }
 
+    //输入框
     public View getEditText(){
         return editText;
     }
-    public TextView getTextView(){
+    // 标题
+    public TextView getTitle(){
         return title;
     }
     // 内容
-    public TextView getTemplate(){
+    public TextView getTitleTemp(){
         return title_template;
     }
+    // 确定
     public View getNegative(){
         return negativeButton;
     }
@@ -82,5 +83,4 @@ public class DeleteDialog extends Dialog {
     public void setOnNegativeListener(View.OnClickListener listener){
         negativeButton.setOnClickListener(listener);
     }
-
 }

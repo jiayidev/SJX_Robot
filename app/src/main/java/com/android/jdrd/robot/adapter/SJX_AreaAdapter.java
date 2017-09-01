@@ -11,7 +11,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.jdrd.robot.R;
-import com.android.jdrd.robot.activity.MainActivity;
+import com.android.jdrd.robot.activity.SJX_MainActivity;
 
 import java.util.List;
 import java.util.Map;
@@ -22,11 +22,11 @@ import java.util.Map;
  * 描述: 桌面适配器
  */
 
-public class AreaAdapter extends BaseAdapter {
+public class SJX_AreaAdapter extends BaseAdapter {
     Context context;
     List<Map<String, Object>> list;
 
-    public AreaAdapter(Context _context, List<Map<String, Object>> _list) {
+    public SJX_AreaAdapter(Context _context, List<Map<String, Object>> _list) {
         this.list = _list;
         this.context = _context;
     }
@@ -79,7 +79,7 @@ public class AreaAdapter extends BaseAdapter {
             // 根据context上下文加载布局，这里的是AreaAdapter本身，即this
             final LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.item, null);
+            convertView = inflater.inflate(R.layout.sjx_item, null);
             viewHolder = new ViewHolder();
             // 根据自定义的Item布局加载布局
             viewHolder.back = (RelativeLayout) convertView.findViewById(R.id.back);
@@ -92,14 +92,14 @@ public class AreaAdapter extends BaseAdapter {
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
-        if (MainActivity.AreaIsEdit) {
-            if (position == MainActivity.Current_INDEX + 1) {
+        if (SJX_MainActivity.AreaIsEdit) {
+            if (position == SJX_MainActivity.Current_INDEX + 1) {
                 viewHolder.back.setBackgroundColor(Color.parseColor("#00923F"));
             } else {
                 viewHolder.back.setBackgroundColor(Color.parseColor("#087235"));
             }
         } else {
-            if (position == MainActivity.Current_INDEX) {
+            if (position == SJX_MainActivity.Current_INDEX) {
                 viewHolder.back.setBackgroundColor(Color.parseColor("#00923F"));
             } else {
                 viewHolder.back.setBackgroundColor(Color.parseColor("#087235"));
@@ -113,20 +113,20 @@ public class AreaAdapter extends BaseAdapter {
             viewHolder.bjzt.setVisibility(View.GONE);
             if (position == 0) {
                 viewHolder.image2.setVisibility(View.VISIBLE);
-                if (MainActivity.AreaIsEdit) {
+                if (SJX_MainActivity.AreaIsEdit) {
                     viewHolder.image2.setImageResource(R.animator.btn_add_area_selector);
                 } else {
                     viewHolder.image2.setImageResource(R.animator.btn_exit_area_selector);
                 }
             } else {
-                if (MainActivity.AreaIsEdit) {
+                if (SJX_MainActivity.AreaIsEdit) {
                     viewHolder.bjzt.setVisibility(View.VISIBLE);
                     viewHolder.image.setVisibility(View.VISIBLE);
                     viewHolder.image.setImageResource(R.animator.btn_add_selector);
                 }
             }
         } else {
-            if (MainActivity.AreaIsEdit) {
+            if (SJX_MainActivity.AreaIsEdit) {
                 viewHolder.bjzt.setVisibility(View.VISIBLE);
             }
             viewHolder.text.setVisibility(View.VISIBLE);

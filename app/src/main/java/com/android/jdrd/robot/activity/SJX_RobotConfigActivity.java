@@ -6,20 +6,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.jdrd.robot.R;
 import com.android.jdrd.robot.helper.RobotDBHelper;
 import com.android.jdrd.robot.util.Constant;
 
-import org.w3c.dom.Text;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -29,7 +22,7 @@ import java.util.Map;
  * 描述: 机器人编辑页面
  */
 
-public class RobotConfigActivity extends Activity implements View.OnClickListener {
+public class SJX_RobotConfigActivity extends Activity implements View.OnClickListener {
     // 初始化数据库类
     private RobotDBHelper robotDBHelper;
     // 机器人id
@@ -53,7 +46,7 @@ public class RobotConfigActivity extends Activity implements View.OnClickListene
         // 隐藏状态栏
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.activity_robot_config);
+        setContentView(R.layout.sjx_activity_robot_config);
 
         //初始化数据库
         robotDBHelper = RobotDBHelper.getInstance(getApplicationContext());
@@ -123,7 +116,7 @@ public class RobotConfigActivity extends Activity implements View.OnClickListene
             // 区域
             case R.id.area:
                 // 跳转到系统卡列表AreaConfig 并传递id
-                Intent intent = new Intent(RobotConfigActivity.this, AreaConfig.class);
+                Intent intent = new Intent(SJX_RobotConfigActivity.this, SJX_AreaConfig.class);
                 intent.putExtra("id", robotId);
                 startActivity(intent);
                 break;

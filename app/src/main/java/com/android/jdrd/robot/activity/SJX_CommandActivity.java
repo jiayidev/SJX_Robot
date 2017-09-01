@@ -6,25 +6,19 @@ import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.jdrd.robot.R;
-import com.android.jdrd.robot.adapter.MyAdapter;
-import com.android.jdrd.robot.adapter.SpinnerAdapter;
-import com.android.jdrd.robot.dialog.DeleteDialog;
-import com.android.jdrd.robot.dialog.MyDialog;
-import com.android.jdrd.robot.dialog.SpinnerDialog;
+import com.android.jdrd.robot.adapter.SJX_SpinnerAdapter;
+import com.android.jdrd.robot.dialog.SJX_DeleteDialog;
+import com.android.jdrd.robot.dialog.SJX_MyDialog;
+import com.android.jdrd.robot.dialog.SJX_SpinnerDialog;
 import com.android.jdrd.robot.helper.RobotDBHelper;
-import com.android.jdrd.robot.util.Constant;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,7 +31,7 @@ import java.util.Map;
  * 描述: 编辑命令
  */
 
-public class CommandActivity extends Activity implements View.OnClickListener {
+public class SJX_CommandActivity extends Activity implements View.OnClickListener {
     // 初始化数据库帮助类
     private RobotDBHelper robotDBHelper;
     private int command_id;
@@ -57,7 +51,7 @@ public class CommandActivity extends Activity implements View.OnClickListener {
         // 隐藏状态栏
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.activity_command_config);
+        setContentView(R.layout.sjx_activity_command_config);
 
         // 初始化数据库
         robotDBHelper = RobotDBHelper.getInstance(getApplicationContext());
@@ -314,17 +308,18 @@ public class CommandActivity extends Activity implements View.OnClickListener {
         }
     }
 
-    private DeleteDialog dialog;
+    private SJX_DeleteDialog dialog;
 
     // 删除命令Dialog
     private void dialog() {
-        dialog = new DeleteDialog(this);
+        dialog = new SJX_DeleteDialog(this);
         // 确定删除
         dialog.setOnPositiveListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // 删除命令
                 robotDBHelper.execSQL("delete from command where id = '" + command_id + "'");
+                dialog.dismiss();
                 finish();
             }
         });
@@ -340,21 +335,21 @@ public class CommandActivity extends Activity implements View.OnClickListener {
         dialog.show();
     }
 
-    private SpinnerDialog spinnerdialog;
-    private SpinnerAdapter spinnerAdapter;
+    private SJX_SpinnerDialog spinnerDialog;
+    private SJX_SpinnerAdapter SJXSpinnerAdapter;
 
     // 自定义运动到站点对话框
     private void dialog_spinner(final boolean gl) {
-        spinnerdialog = new SpinnerDialog(this);
+        spinnerDialog = new SJX_SpinnerDialog(this);
         if (gl) {
-            spinnerAdapter = new SpinnerAdapter(this, goalList, gl);
+            SJXSpinnerAdapter = new SJX_SpinnerAdapter(this, goalList, gl);
         } else {
-            spinnerAdapter = new SpinnerAdapter(this, list, gl);
+            SJXSpinnerAdapter = new SJX_SpinnerAdapter(this, list, gl);
         }
         // 加载适配器
-        spinnerdialog.getListView().setAdapter(spinnerAdapter);
+        spinnerDialog.getListView().setAdapter(SJXSpinnerAdapter);
         // 子列表点击事件
-        spinnerdialog.getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        spinnerDialog.getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (gl) {
@@ -362,18 +357,18 @@ public class CommandActivity extends Activity implements View.OnClickListener {
                 } else {
                     directionNum = position;
                 }
-                spinnerAdapter.notifyDataSetChanged();
+                SJXSpinnerAdapter.notifyDataSetChanged();
             }
         });
         // 确定Dialog
-        spinnerdialog.setOnPositiveListener(new View.OnClickListener() {
+        spinnerDialog.setOnPositiveListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (gl) {
                     if (goalList != null && goalList.size() > 0 && goalNum != -1) {
                         robotDBHelper.execSQL("update command set goal= '" + goalList.get(goalNum).get("id") + "' where id= '" + command_id + "'");
                         goal.setText(goalList.get(goalNum).get("name").toString());
-                        spinnerdialog.dismiss();
+                        spinnerDialog.dismiss();
                     } else {
                         Toast.makeText(getApplicationContext(), "请选择站点系统卡", Toast.LENGTH_SHORT).show();
                     }
@@ -390,28 +385,28 @@ public class CommandActivity extends Activity implements View.OnClickListener {
                             direction.setText("右岔道");
                             break;
                     }
-                    spinnerdialog.dismiss();
+                    spinnerDialog.dismiss();
                 }
             }
         });
         // 取消Dialog
-        spinnerdialog.setOnNegativeListener(new View.OnClickListener() {
+        spinnerDialog.setOnNegativeListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // 销毁窗体
-                spinnerdialog.dismiss();
+                spinnerDialog.dismiss();
             }
         });
         // 显示Dialog
-        spinnerdialog.show();
+        spinnerDialog.show();
     }
 
 
-    private MyDialog textDialog;
+    private SJX_MyDialog textDialog;
     private EditText editText;
 
     private void dialog_Text(final int type) {
-        textDialog = new MyDialog(this);
+        textDialog = new SJX_MyDialog(this);
         // type=  0->速度  1->MP3通道  2->超时时间  3->显示编号  4->显示颜色
         switch (type) {
             case 0:

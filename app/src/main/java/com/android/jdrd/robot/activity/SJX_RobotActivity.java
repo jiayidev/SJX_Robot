@@ -6,16 +6,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.jdrd.robot.R;
-import com.android.jdrd.robot.dialog.RobotDialog;
 import com.android.jdrd.robot.helper.RobotDBHelper;
 import com.android.jdrd.robot.util.Constant;
 
@@ -28,7 +24,7 @@ import java.util.Map;
  * 描述: 机器人状态
  */
 
-public class RobotActivity extends Activity implements View.OnClickListener {
+public class SJX_RobotActivity extends Activity implements View.OnClickListener {
     // 数据库帮助类
     private RobotDBHelper robotDBHelper;
     // 机器人id
@@ -46,7 +42,7 @@ public class RobotActivity extends Activity implements View.OnClickListener {
         // 隐藏状态栏
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.activity_robot);
+        setContentView(R.layout.sjx_activity_robot);
         //初始化数据库
         robotDBHelper = RobotDBHelper.getInstance(getApplicationContext());
         // 获取MainActivity传递的Id
@@ -157,7 +153,7 @@ public class RobotActivity extends Activity implements View.OnClickListener {
             // 机器人状态设置
             case R.id.setting_redact:
                 // 跳转到 机器人编辑页面 并传递id
-                Intent intent = new Intent(RobotActivity.this, RobotConfigActivity.class);
+                Intent intent = new Intent(SJX_RobotActivity.this, SJX_RobotConfigActivity.class);
                 intent.putExtra("id", robotId);
                 startActivity(intent);
                 break;

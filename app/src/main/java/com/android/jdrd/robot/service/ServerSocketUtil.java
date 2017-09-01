@@ -14,7 +14,6 @@ import android.support.v7.app.NotificationCompat;
 import android.widget.Toast;
 
 import com.android.jdrd.robot.R;
-import com.android.jdrd.robot.Test.Protocol;
 import com.android.jdrd.robot.helper.RobotDBHelper;
 import com.android.jdrd.robot.util.Constant;
 
@@ -111,7 +110,7 @@ public class ServerSocketUtil extends Service {
             //开启线程
             new Thread(new Task(socket)).start();
 
-            btSendBytes(Protocol.getSendData(16, Protocol.getCommandData(Protocol.MN_PATTERN)), socket);
+            //btSendBytes(Protocol.getSendData(16, Protocol.getCommandData(Protocol.MN_PATTERN)), socket);
         }
     }
 
@@ -290,12 +289,12 @@ public class ServerSocketUtil extends Service {
                             }
                         }
                     }
-
-                    try {
+                    // 启动发送数据
+/*                    try {
                         btSendBytes(Protocol.getSendData(16, Protocol.getCommandData(Protocol.MN_PATTERN)), socket_ip, socket_cache);
                     } catch (IOException e) {
                         e.printStackTrace();
-                    }
+                    }*/
 
                 }
             }).start();
@@ -391,6 +390,7 @@ public class ServerSocketUtil extends Service {
             } else if ('#' == buf) {
                 flag = false;
             }
+            // TODO
             if (flag) {
                 buffer[i] = buf;
                 i++;

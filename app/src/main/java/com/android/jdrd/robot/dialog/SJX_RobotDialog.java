@@ -2,7 +2,6 @@ package com.android.jdrd.robot.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -10,7 +9,7 @@ import android.widget.GridView;
 import android.widget.SimpleAdapter;
 
 import com.android.jdrd.robot.R;
-import com.android.jdrd.robot.activity.MainActivity;
+import com.android.jdrd.robot.activity.SJX_MainActivity;
 import com.android.jdrd.robot.helper.RobotDBHelper;
 import com.android.jdrd.robot.service.ServerSocketUtil;
 import com.android.jdrd.robot.util.Constant;
@@ -27,7 +26,7 @@ import java.util.Map;
  * 时间: 2017/8/8
  * 描述: 自定义机器人运行轨迹对话框
  */
-public class RobotDialog extends Dialog {
+public class SJX_RobotDialog extends Dialog {
     // 初始化数据库帮助类
     private static RobotDBHelper robotDBHelper;
     private Context context;
@@ -48,6 +47,8 @@ public class RobotDialog extends Dialog {
     public static int CurrentIndex = -1;
     // 发送数据
     private static String sendStr;
+
+    // 字节数组发送命令
     public static byte[] data;
 
 
@@ -57,7 +58,8 @@ public class RobotDialog extends Dialog {
     public static Thread thread = new Thread();
     public static boolean flag;
 
-    public RobotDialog(Context context, String str) {
+    // 传输字符串
+    public SJX_RobotDialog(Context context, String str) {
         super(context, R.style.SoundRecorder);
         setCustomDialog();
         this.context = context;
@@ -65,7 +67,8 @@ public class RobotDialog extends Dialog {
         flag = false;
     }
 
-    public RobotDialog(Context context, byte[] data) {
+    // 传输16进制
+    public SJX_RobotDialog(Context context, byte[] data) {
         super(context, R.style.SoundRecorder);
         setCustomDialog();
         this.context = context;
@@ -74,8 +77,8 @@ public class RobotDialog extends Dialog {
 
     }
 
-
-    public RobotDialog(Context context, List<Map> robotList) {
+    // 集合列表
+    public SJX_RobotDialog(Context context, List<Map> robotList) {
         super(context, R.style.SoundRecorder);
         // 初始化数据
         setCustomDialog();
@@ -89,7 +92,7 @@ public class RobotDialog extends Dialog {
      */
     private void setCustomDialog() {
         // 加载要执行的机器人布局
-        View mView = LayoutInflater.from(getContext()).inflate(R.layout.fragment_robot_dialog, null);
+        View mView = LayoutInflater.from(getContext()).inflate(R.layout.sjx_fragment_robot_dialog, null);
         // 初始化要执行的机器人列表
         gridView = (GridView) mView.findViewById(R.id.robot_girdview);
         list = new ArrayList<>();
@@ -97,7 +100,7 @@ public class RobotDialog extends Dialog {
         robotDBHelper = RobotDBHelper.getInstance(context);
         try {
             // 查询机器人列表 根据区域名称 and 在线状态
-            list = robotDBHelper.queryListMap("select * from robot where area = '" + MainActivity.CURRENT_AREA_id + "' and outline = '1'", null);
+            list = robotDBHelper.queryListMap("select * from robot where area = '" + SJX_MainActivity.CURRENT_AREA_id + "' and outline = '1'", null);
             // 打印log
             Constant.debugLog("要执行的机器人列表----->" + list.toString());
         } catch (Exception e) {
@@ -134,7 +137,7 @@ public class RobotDialog extends Dialog {
             // 打印log
             Constant.debugLog(robotData_list.toString());
             // 简单的适配器   没有自定义  调用系统提供的适配器
-            robotAdapter = new SimpleAdapter(getContext(), robotData_list, R.layout.robot_grid_item, from, to);
+            robotAdapter = new SimpleAdapter(getContext(), robotData_list, R.layout.sjx_robot_grid_item, from, to);
             // 加载适配器
             gridView.setAdapter(robotAdapter);
             // 要执行的机器人子项列表
@@ -149,9 +152,11 @@ public class RobotDialog extends Dialog {
                         // 销毁当前Dialog
                         dismiss();
                     } else {
-                        // 发送命令
-                        //sendCommand();
-                        btSendBytes();
+                        // 发送字符串命令
+                        sendCommand();
+
+                        // 发送字节数组命令
+                        //btSendBytes();
                         // 销毁当前Dialog
                         dismiss();
                     }
@@ -184,6 +189,9 @@ public class RobotDialog extends Dialog {
         }
     }
 
+    /**
+     * 发送字节数组
+     */
     public void btSendBytes() {
         for (Map map : ServerSocketUtil.socketList) {
             if (map.get("ip").equals(IP)) {

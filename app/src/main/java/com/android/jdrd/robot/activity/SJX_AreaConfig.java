@@ -10,10 +10,8 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.android.jdrd.robot.R;
-import com.android.jdrd.robot.adapter.AreaConfigAdapter;
-import com.android.jdrd.robot.adapter.CardAdapter;
+import com.android.jdrd.robot.adapter.SJX_AreaConfigAdapter;
 import com.android.jdrd.robot.helper.RobotDBHelper;
-import com.android.jdrd.robot.util.Constant;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,9 +23,9 @@ import java.util.Map;
  * 描述: 系统卡列表
  */
 
-public class AreaConfig extends Activity implements View.OnClickListener {
+public class SJX_AreaConfig extends Activity implements View.OnClickListener {
     // 区域信息适配器
-    private AreaConfigAdapter myAdapter;
+    private SJX_AreaConfigAdapter myAdapter;
     // 加载区域列表
     private ListView areaList;
     // 数据库帮助类
@@ -48,7 +46,7 @@ public class AreaConfig extends Activity implements View.OnClickListener {
         // 隐藏状态栏
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.activity_areaconfig);
+        setContentView(R.layout.sjx_activity_areaconfig);
 
         // 初始化数据库
         robotDBHelper = RobotDBHelper.getInstance(getApplicationContext());
@@ -90,7 +88,7 @@ public class AreaConfig extends Activity implements View.OnClickListener {
             }
         }
         // 显示到List列表上
-        myAdapter = new AreaConfigAdapter(this, area_list);
+        myAdapter = new SJX_AreaConfigAdapter(this, area_list);
         areaList.setAdapter(myAdapter);
     }
 
@@ -113,7 +111,7 @@ public class AreaConfig extends Activity implements View.OnClickListener {
             // 确定
             case R.id.add_card:
                 // 向CardConfigActivity传递数据
-                Intent intent = new Intent(AreaConfig.this, CardConfigActivity.class);
+                Intent intent = new Intent(SJX_AreaConfig.this, SJX_CardConfigActivity.class);
                 intent.putExtra("id", 0);
                 startActivity(intent);
                 break;

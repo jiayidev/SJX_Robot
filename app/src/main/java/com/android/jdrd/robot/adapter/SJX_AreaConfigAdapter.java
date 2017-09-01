@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.jdrd.robot.R;
+import com.android.jdrd.robot.activity.SJX_AreaConfig;
 
 import java.util.List;
 import java.util.Map;
@@ -16,14 +17,14 @@ import java.util.Map;
 /**
  * 作者: jiayi.zhang
  * 时间: 2017/8/9
- * 描述: 区域名称适配器
+ * 描述:  区域名称适配器
  */
 
-public class CardAdapter extends BaseAdapter {
+public class SJX_AreaConfigAdapter extends BaseAdapter {
     Context context;
     List<Map> list;
 
-    public CardAdapter(Context _context, List<Map> _list) {
+    public SJX_AreaConfigAdapter(Context _context, List<Map> _list) {
         this.list = _list;
         this.context = _context;
     }
@@ -76,7 +77,7 @@ public class CardAdapter extends BaseAdapter {
             // 根据context上下文加载布局，这里的是AreaAdapter本身，即this
             final LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.listview_card, null);
+            convertView = inflater.inflate(R.layout.sjx_listview_card, null);
             viewHolder = new ViewHolder();
             // 根据自定义的Item布局加载布局
             viewHolder.text = (TextView) convertView.findViewById(R.id.text);
@@ -88,6 +89,9 @@ public class CardAdapter extends BaseAdapter {
             viewHolder = (ViewHolder) convertView.getTag();
         }
         viewHolder.text.setText(list.get(position).get("name").toString());
+        if (position == SJX_AreaConfig.Current_position) {
+            viewHolder.imageview.setVisibility(View.VISIBLE);
+        }
         return convertView;
     }
 

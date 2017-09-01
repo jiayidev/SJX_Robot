@@ -9,26 +9,23 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.jdrd.robot.R;
-import com.android.jdrd.robot.activity.CommandActivity;
 
 import java.util.List;
 import java.util.Map;
 
-
 /**
  * 作者: jiayi.zhang
- * 时间: 2017/8/8
+ * 时间: 2017/8/9
  * 描述: 区域名称适配器
  */
-public class SpinnerAdapter extends BaseAdapter {
+
+public class SJX_CardAdapter extends BaseAdapter {
     Context context;
     List<Map> list;
-    boolean flag;
 
-    public SpinnerAdapter(Context _context, List<Map> _list, boolean flag) {
+    public SJX_CardAdapter(Context _context, List<Map> _list) {
         this.list = _list;
         this.context = _context;
-        this.flag = flag;
     }
 
     /**
@@ -79,25 +76,16 @@ public class SpinnerAdapter extends BaseAdapter {
             // 根据context上下文加载布局，这里的是AreaAdapter本身，即this
             final LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.listview_card, null);
-            // 根据自定义的Item布局加载布局
+            convertView = inflater.inflate(R.layout.sjx_listview_card, null);
             viewHolder = new ViewHolder();
+            // 根据自定义的Item布局加载布局
             viewHolder.text = (TextView) convertView.findViewById(R.id.text);
             viewHolder.imageview = (ImageView) convertView.findViewById(R.id.imageview);
             // 将设置好的布局保存到缓存中，并将其设置在Tag里，以便后面方便取出Tag
             convertView.setTag(viewHolder);
+
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
-        }
-        viewHolder.imageview.setVisibility(View.GONE);
-        if (flag) {
-            if (position == CommandActivity.goalNum) {
-                viewHolder.imageview.setVisibility(View.VISIBLE);
-            }
-        } else {
-            if (position == CommandActivity.directionNum) {
-                viewHolder.imageview.setVisibility(View.VISIBLE);
-            }
         }
         viewHolder.text.setText(list.get(position).get("name").toString());
         return convertView;

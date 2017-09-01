@@ -14,7 +14,7 @@ import android.support.v7.app.NotificationCompat;
 import android.widget.Toast;
 
 import com.android.jdrd.robot.R;
-import com.android.jdrd.robot.dialog.RobotDialog;
+import com.android.jdrd.robot.dialog.SJX_RobotDialog;
 import com.android.jdrd.robot.helper.RobotDBHelper;
 import com.android.jdrd.robot.util.Constant;
 import com.google.gson.Gson;
@@ -28,7 +28,6 @@ import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -326,10 +325,10 @@ public class ClientSocketUtil extends Service {
                     } else if (function.equals("command")) {
                         String data = getJSONString(msg, "data");
                         List<Map> commandLit = robotDBHelper.queryListMap("select * from command where desk = '" + getJSONString(data, "desk") + "'", null);
-                        RobotDialog.IP = getJSONString(data, "robot");
-                        RobotDialog.robotList = commandLit;
-                        RobotDialog.CurrentIndex = -1;
-                        RobotDialog.sendCommandList();
+                        SJX_RobotDialog.IP = getJSONString(data, "robot");
+                        SJX_RobotDialog.robotList = commandLit;
+                        SJX_RobotDialog.CurrentIndex = -1;
+                        SJX_RobotDialog.sendCommandList();
                     }
                     if (string != null) {
                         try {

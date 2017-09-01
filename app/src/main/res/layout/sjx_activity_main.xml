@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#EEEEEE"
-    tools:context="com.android.jdrd.robot.activity.MainActivity">
+    tools:context="com.android.jdrd.robot.activity.SJX_MainActivity">
 
     <RelativeLayout
         android:id="@+id/main"
@@ -151,58 +151,6 @@
         </LinearLayout>
     </RelativeLayout>
 
-
-    <!--<Button android:id="@+id/button_composer_sleep"-->
-    <!--android:layout_width="wrap_content" android:layout_height="wrap_content"-->
-    <!--android:background="@mipmap/composer_sleep"-->
-    <!--android:layout_marginBottom="10dip" android:layout_marginLeft="10dip"-->
-    <!--android:layout_alignParentBottom="true">-->
-    <!--</Button>-->
-
-    <!--<Button android:id="@+id/button_composer_thought"-->
-    <!--android:layout_width="wrap_content" android:layout_height="wrap_content"-->
-    <!--android:background="@mipmap/composer_thought"-->
-    <!--android:layout_marginBottom="10dip" android:layout_marginLeft="10dip"-->
-    <!--android:layout_alignParentBottom="true" android:layout_above="@id/button_composer_sleep">-->
-    <!--</Button>-->
-
-    <!--<Button android:id="@+id/button_composer_music"-->
-    <!--android:layout_width="wrap_content" android:layout_height="wrap_content"-->
-    <!--android:background="@mipmap/composer_music"-->
-    <!--android:layout_marginBottom="10dip" android:layout_marginLeft="10dip"-->
-    <!--android:layout_alignParentBottom="true">-->
-    <!--</Button>-->
-
-    <!--<Button android:id="@+id/button_composer_place"-->
-    <!--android:layout_width="wrap_content" android:layout_height="wrap_content"-->
-    <!--android:background="@mipmap/composer_place"-->
-    <!--android:layout_marginBottom="10dip" android:layout_marginLeft="10dip"-->
-    <!--android:layout_alignParentBottom="true" android:layout_above="@id/button_composer_music">-->
-    <!--</Button>-->
-
-
-    <!--<Button android:id="@+id/button_composer_with"-->
-    <!--android:layout_width="wrap_content" android:layout_height="wrap_content"-->
-    <!--android:background="@mipmap/composer_with"-->
-    <!--android:layout_marginBottom="10dip" android:layout_marginLeft="10dip"-->
-    <!--android:layout_alignParentBottom="true" android:layout_above="@id/button_composer_place">-->
-    <!--</Button>-->
-
-
-    <!--<Button android:id="@+id/button_composer_camera"-->
-    <!--android:layout_width="wrap_content" android:layout_height="wrap_content"-->
-    <!--android:background="@mipmap/composer_camera"-->
-    <!--android:layout_marginBottom="10dip" android:layout_marginLeft="10dip"-->
-    <!--android:layout_alignParentBottom="true" android:layout_above="@id/button_composer_with">-->
-    <!--</Button>-->
-
-
-    <!--<Button android:id="@+id/button_friends_delete"-->
-    <!--android:layout_width="wrap_content" android:layout_height="wrap_content"-->
-    <!--android:background="@mipmap/friends_delete"-->
-    <!--android:layout_marginBottom="10dip" android:layout_marginLeft="10dip"-->
-    <!--android:layout_alignParentBottom="true" android:layout_above="@id/button_composer_camera">-->
-    <!--</Button>-->
     <Button
         android:id="@+id/up"
         android:layout_width="48dp"

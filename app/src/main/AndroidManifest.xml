@@ -30,7 +30,7 @@
         android:supportsRtl="true"
         android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
         <activity
-            android:name=".activity.LaunchActivity"
+            android:name=".activity.SJX_LaunchActivity"
             android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -38,7 +38,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.MainActivity">
+        <activity android:name=".activity.SJX_MainActivity">
 
             <!-- android:configChanges="orientation|keyboardHidden" -->
             <!-- android:screenOrientation="portrait" -->
@@ -46,31 +46,31 @@
         </activity>
         <!-- 设置指令 -->
         <activity
-            android:name=".activity.DeskConfigPathActivity"
+            android:name=".activity.SJX_DeskConfigPathActivity"
             android:windowSoftInputMode="stateHidden|stateAlwaysHidden" />
         <!-- 机器人编辑页面 -->
         <activity
-            android:name=".activity.RobotConfigActivity"
+            android:name=".activity.SJX_RobotConfigActivity"
             android:windowSoftInputMode="stateHidden|stateAlwaysHidden" />
         <!-- 机器人状态 -->
         <activity
-            android:name=".activity.RobotActivity"
+            android:name=".activity.SJX_RobotActivity"
             android:windowSoftInputMode="stateHidden|stateAlwaysHidden" />
         <!-- 编辑命令 -->
         <activity
-            android:name=".activity.CommandActivity"
+            android:name=".activity.SJX_CommandActivity"
             android:windowSoftInputMode="stateHidden|stateAlwaysHidden" />
         <!-- 系统卡列表 -->
         <activity
-            android:name=".activity.CardConfig"
+            android:name=".activity.SJX_CardConfig"
             android:windowSoftInputMode="stateHidden|stateAlwaysHidden" />
         <!-- 系统卡编辑页面 -->
         <activity
-            android:name=".activity.CardConfigActivity"
+            android:name=".activity.SJX_CardConfigActivity"
             android:windowSoftInputMode="stateHidden|stateAlwaysHidden" />
         <!-- 系统卡列表 -->
         <activity
-            android:name=".activity.AreaConfig"
+            android:name=".activity.SJX_AreaConfig"
             android:windowSoftInputMode="stateHidden|stateAlwaysHidden" />
 
         <!-- 静态IP服务 -->

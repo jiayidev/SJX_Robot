@@ -27,13 +27,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.jdrd.robot.R;
-import com.android.jdrd.robot.Test.Protocol;
-import com.android.jdrd.robot.adapter.AreaAdapter;
-import com.android.jdrd.robot.adapter.DeskAdapter;
-import com.android.jdrd.robot.adapter.GridViewAdapter;
-import com.android.jdrd.robot.dialog.DeleteDialog;
-import com.android.jdrd.robot.dialog.MyDialog;
-import com.android.jdrd.robot.dialog.RobotDialog;
+import com.android.jdrd.robot.adapter.SJX_AreaAdapter;
+import com.android.jdrd.robot.adapter.SJX_DeskAdapter;
+import com.android.jdrd.robot.adapter.SJX_GridViewAdapter;
+import com.android.jdrd.robot.dialog.SJX_DeleteDialog;
+import com.android.jdrd.robot.dialog.SJX_MyDialog;
+import com.android.jdrd.robot.dialog.SJX_RobotDialog;
 import com.android.jdrd.robot.helper.RobotDBHelper;
 import com.android.jdrd.robot.service.ServerSocketUtil;
 import com.android.jdrd.robot.service.SetStaticIPService;
@@ -49,7 +48,7 @@ import java.util.Map;
  * 时间: 2017/7/27
  * 描述: 主页
  */
-public class MainActivity extends Activity implements View.OnClickListener, Animation.AnimationListener {
+public class SJX_MainActivity extends Activity implements View.OnClickListener, Animation.AnimationListener {
     // 初始化广播
     private MyReceiver receiver;
     // 初始化数据库帮助类
@@ -97,11 +96,11 @@ public class MainActivity extends Activity implements View.OnClickListener, Anim
     private TranslateAnimation translateAnimation;
 
     // 桌面适配器
-    private DeskAdapter desk_adapter;
+    private SJX_DeskAdapter desk_adapter;
     // 区域适配器
-    private AreaAdapter area_adapter;
+    private SJX_AreaAdapter area_adapter;
     // 机器人状态适配器
-    private GridViewAdapter gridViewAdapter;
+    private SJX_GridViewAdapter SJXGridViewAdapter;
 
     // 桌子是否编辑
     public static boolean DeskIsEdit = false;
@@ -125,7 +124,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Anim
         // 隐藏状态栏
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.sjx_activity_main);
 
         // 静态IP
         Intent SetStaticIPService = new Intent(this, SetStaticIPService.class);
@@ -181,7 +180,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Anim
                     startAnimationLeft();
                 } else {
                     // 跳转到RobotActivity 并传递数据
-                    Intent intent = new Intent(MainActivity.this, RobotActivity.class);
+                    Intent intent = new Intent(SJX_MainActivity.this, SJX_RobotActivity.class);
                     intent.putExtra("id", (Integer) robotData_List.get(position).get("id"));
                     startActivity(intent);
                 }
@@ -208,7 +207,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Anim
         shrink.setOnClickListener(this);
 
         //获取数据
-        desk_adapter = new DeskAdapter(this, deskData_list);
+        desk_adapter = new SJX_DeskAdapter(this, deskData_list);
 
         // 初始化桌面列表
         deskView = (GridView) findViewById(R.id.gview);
@@ -227,12 +226,12 @@ public class MainActivity extends Activity implements View.OnClickListener, Anim
                         if (DeskIsEdit) {
                             if (position == 0) {
                                 // 跳转到DeskConfigPathActivity 并传递area
-                                Intent intent = new Intent(MainActivity.this, DeskConfigPathActivity.class);
+                                Intent intent = new Intent(SJX_MainActivity.this, SJX_DeskConfigPathActivity.class);
                                 intent.putExtra("area", CURRENT_AREA_id);
                                 startActivity(intent);
                             } else {
                                 // 跳转到DeskConfigPathActivity 并传递area
-                                Intent intent = new Intent(MainActivity.this, DeskConfigPathActivity.class);
+                                Intent intent = new Intent(SJX_MainActivity.this, SJX_DeskConfigPathActivity.class);
                                 intent.putExtra("area", CURRENT_AREA_id);
                                 intent.putExtra("id", (Integer) deskData_list.get(position).get("id"));
                                 startActivity(intent);
@@ -254,7 +253,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Anim
             }
         });
 
-        area_adapter = new AreaAdapter(this, areaData_list);
+        area_adapter = new SJX_AreaAdapter(this, areaData_list);
         area.setAdapter(area_adapter);
         // 区域子列表点击事件
         area.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -322,9 +321,9 @@ public class MainActivity extends Activity implements View.OnClickListener, Anim
         robotGirdView.setHorizontalSpacing((int) (8 * density)); // 间距
         robotGirdView.setStretchMode(GridView.NO_STRETCH);
         robotGirdView.setNumColumns(size); // 重点
-        gridViewAdapter = new GridViewAdapter(getApplicationContext(),
+        SJXGridViewAdapter = new SJX_GridViewAdapter(getApplicationContext(),
                 robotData_List);
-        robotGirdView.setAdapter(gridViewAdapter);
+        robotGirdView.setAdapter(SJXGridViewAdapter);
     }
 
     @Override
@@ -369,7 +368,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Anim
         }
         getDeskData();
         getRobotData();
-        gridViewAdapter.notifyDataSetInvalidated();
+        SJXGridViewAdapter.notifyDataSetInvalidated();
     }
 
     @Override
@@ -426,7 +425,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Anim
             case R.id.up:
                 robotDialog("*u+6+#");
                 // 发送命令
-                //robotDialog(Protocol.getSendData(16, Protocol.getCommandData(Protocol.MN_PATTERN)));
+                //SJXRobotDialog(Protocol.getSendData(16, Protocol.getCommandData(Protocol.MN_PATTERN)));
                 break;
             // 后退命令
             case R.id.down:
@@ -599,7 +598,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Anim
                 // 设置动画是否停留在最后一帧，为true则是停留在最后一帧
                 translateAnimation.setFillAfter(true);
                 // 给一个动画设置监听，设置类似侦听动画的开始或动画重复的通知
-                translateAnimation.setAnimationListener(MainActivity.this);
+                translateAnimation.setAnimationListener(SJX_MainActivity.this);
                 // 左侧区域平移出来
                 map_right_Relative.startAnimation(translateAnimation);
 
@@ -627,7 +626,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Anim
                 );
                 translateAnimation.setDuration(500);
                 translateAnimation.setFillAfter(true);
-                translateAnimation.setAnimationListener(MainActivity.this);
+                translateAnimation.setAnimationListener(SJX_MainActivity.this);
                 map_right_Relative.startAnimation(translateAnimation);
 
                 translateAnimation = new TranslateAnimation(Animation.ABSOLUTE, Constant.linearWidth,
@@ -764,13 +763,13 @@ public class MainActivity extends Activity implements View.OnClickListener, Anim
     };
 
     // 初始化区域Dialog
-    private MyDialog dialog;
+    private SJX_MyDialog dialog;
     private EditText editText;
     private TextView title;
 
     // 区域Dialog
     private void dialog() {
-        dialog = new MyDialog(this);
+        dialog = new SJX_MyDialog(this);
         editText = (EditText) dialog.getEditText();
         // 确定Dialog
         dialog.setOnPositiveListener(new View.OnClickListener() {
@@ -802,7 +801,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Anim
 
     // 修改区域Dialog
     private void dialog(String name, final int id) {
-        dialog = new MyDialog(this);
+        dialog = new SJX_MyDialog(this);
         editText = (EditText) dialog.getEditText();
         editText.setText(name);
         title = (TextView) dialog.getTitle();
@@ -835,11 +834,11 @@ public class MainActivity extends Activity implements View.OnClickListener, Anim
     }
 
     // 机器人运行Dialog
-    private RobotDialog robotDialog;
+    private SJX_RobotDialog SJXRobotDialog;
 
     private void robotDialog(String str) {
-        robotDialog = new RobotDialog(this, str);
-        robotDialog.show();
+        SJXRobotDialog = new SJX_RobotDialog(this, str);
+        SJXRobotDialog.show();
     }
 
     /**
@@ -848,24 +847,24 @@ public class MainActivity extends Activity implements View.OnClickListener, Anim
      * @param data 数据
      */
     private void robotDialog(byte[] data) {
-        robotDialog = new RobotDialog(this, data);
-        robotDialog.show();
+        SJXRobotDialog = new SJX_RobotDialog(this, data);
+        SJXRobotDialog.show();
     }
 
     private void robotDialog(List<Map> list) {
-        robotDialog = new RobotDialog(this, list);
-        robotDialog.show();
+        SJXRobotDialog = new SJX_RobotDialog(this, list);
+        SJXRobotDialog.show();
     }
 
     // 删除Dialog
-    private DeleteDialog deleteDialog;
+    private SJX_DeleteDialog SJXDeleteDialog;
 
     // 根据id删除区域
     private void deleteDialog(final int id) {
-        deleteDialog = new DeleteDialog(this);
-        deleteDialog.getTemplate().setText("确定删除区域吗？");
+        SJXDeleteDialog = new SJX_DeleteDialog(this);
+        SJXDeleteDialog.getTemplate().setText("确定删除区域吗？");
         // 确定Dialog
-        deleteDialog.setOnPositiveListener(new View.OnClickListener() {
+        SJXDeleteDialog.setOnPositiveListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // 删除区域
@@ -891,20 +890,20 @@ public class MainActivity extends Activity implements View.OnClickListener, Anim
                 // 获取桌面数据
                 getDeskData();
                 // 销毁当前Dialog
-                deleteDialog.dismiss();
+                SJXDeleteDialog.dismiss();
                 dialog.dismiss();
             }
         });
         // 取消Dialog
-        deleteDialog.setOnNegativeListener(new View.OnClickListener() {
+        SJXDeleteDialog.setOnNegativeListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // 销毁当前Dialog
-                deleteDialog.dismiss();
+                SJXDeleteDialog.dismiss();
             }
         });
         // 显示Dialog
-        deleteDialog.show();
+        SJXDeleteDialog.show();
     }
 
     // 注册广播
@@ -927,22 +926,22 @@ public class MainActivity extends Activity implements View.OnClickListener, Anim
             // 获取机器人数据
             getRobotData();
             // 刷新
-            gridViewAdapter.notifyDataSetInvalidated();
+            SJXGridViewAdapter.notifyDataSetInvalidated();
             Constant.debugLog("=====连接成功=====");
         } else if (string.equals("robot_receive_succus")) {
             Constant.debugLog("=====收到指令成功=====");
-            synchronized (RobotDialog.thread) {
-                if (RobotDialog.CurrentIndex == -1) {
-                    RobotDialog.CurrentIndex = 0;
+            synchronized (SJX_RobotDialog.thread) {
+                if (SJX_RobotDialog.CurrentIndex == -1) {
+                    SJX_RobotDialog.CurrentIndex = 0;
                 }
-                RobotDialog.thread.notify();
+                SJX_RobotDialog.thread.notify();
             }
         } else if (string.equals("robot_receive_fail")) {
             Constant.debugLog("=====收到指令失败=====");
-            if (RobotDialog.flag) {
-                RobotDialog.sendCommandList();
+            if (SJX_RobotDialog.flag) {
+                SJX_RobotDialog.sendCommandList();
             } else {
-                RobotDialog.sendCommand();
+                SJX_RobotDialog.sendCommand();
             }
         } else if (string.equals("robot_destory")) {
             Constant.debugLog("=====销毁机器人=====");

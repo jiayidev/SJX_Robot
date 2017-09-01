@@ -6,14 +6,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.android.jdrd.robot.R;
-
-import java.util.List;
-import java.util.Map;
 
 
 /**
@@ -21,12 +17,12 @@ import java.util.Map;
  * 时间: 2017/8/8
  * 描述:自定义运动到站点对话框
  */
-public class SpinnerDialog extends Dialog {
+public class SJX_SpinnerDialog extends Dialog {
     private ListView listView;
     private Button positiveButton, negativeButton;
     private TextView title;
 
-    public SpinnerDialog(Context context) {
+    public SJX_SpinnerDialog(Context context) {
         super(context, R.style.SoundRecorder);
         setCustomDialog();
     }
@@ -36,7 +32,7 @@ public class SpinnerDialog extends Dialog {
      */
     private void setCustomDialog() {
         // 加载布局
-        View mView = LayoutInflater.from(getContext()).inflate(R.layout.fragment_spinner_dialog, null);
+        View mView = LayoutInflater.from(getContext()).inflate(R.layout.sjx_fragment_spinner_dialog, null);
         title = (TextView) mView.findViewById(R.id.title);
         listView = (ListView) mView.findViewById(R.id.listview);
         positiveButton = (Button) mView.findViewById(R.id.positiveButton);

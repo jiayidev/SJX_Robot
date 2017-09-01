@@ -1,8 +1,6 @@
 package com.android.jdrd.robot.adapter;
 
 import android.content.Context;
-import android.graphics.drawable.DrawableContainer;
-import android.graphics.drawable.PictureDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,11 +19,11 @@ import java.util.Map;
  * 描述: 机器人状态适配器
  */
 
-public class GridViewAdapter extends BaseAdapter {
+public class SJX_GridViewAdapter extends BaseAdapter {
     Context context;
     List<Map> list;
 
-    public GridViewAdapter(Context _context, List<Map> _list) {
+    public SJX_GridViewAdapter(Context _context, List<Map> _list) {
         this.list = _list;
         this.context = _context;
     }
@@ -78,7 +76,7 @@ public class GridViewAdapter extends BaseAdapter {
             // 根据context上下文加载布局，这里的是AreaAdapter本身，即this
             final LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.grid_item, null);
+            convertView = inflater.inflate(R.layout.sjx_grid_item, null);
             viewHolder = new ViewHolder();
             // 根据自定义的Item布局加载布局
             viewHolder.imageView = (ImageView) convertView.findViewById(R.id.imageview);

@@ -3,18 +3,14 @@ package com.android.jdrd.robot.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
 
 import com.android.jdrd.robot.R;
-import com.android.jdrd.robot.adapter.CardAdapter;
-import com.android.jdrd.robot.dialog.DeleteDialog;
+import com.android.jdrd.robot.dialog.SJX_DeleteDialog;
 import com.android.jdrd.robot.helper.RobotDBHelper;
 import com.android.jdrd.robot.util.Constant;
 
@@ -28,7 +24,7 @@ import java.util.Map;
  * 描述: 系统卡编辑页面
  */
 
-public class CardConfigActivity extends Activity implements View.OnClickListener {
+public class SJX_CardConfigActivity extends Activity implements View.OnClickListener {
     // 数据库帮助类
     private RobotDBHelper robotDBHelper;
     // 编号
@@ -48,7 +44,7 @@ public class CardConfigActivity extends Activity implements View.OnClickListener
         // 隐藏状态栏
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.activity_cardactivity);
+        setContentView(R.layout.sjx_activity_cardactivity);
 
         // 初始化数据库
         robotDBHelper = RobotDBHelper.getInstance(getApplicationContext());
@@ -108,10 +104,10 @@ public class CardConfigActivity extends Activity implements View.OnClickListener
         }
     }
 
-    private DeleteDialog dialog;
+    private SJX_DeleteDialog dialog;
 
     private void dialog() {
-        dialog = new DeleteDialog(this);
+        dialog = new SJX_DeleteDialog(this);
         // Dialog 确定按钮
         dialog.setOnPositiveListener(new View.OnClickListener() {
             @Override
