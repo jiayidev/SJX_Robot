@@ -152,15 +152,15 @@ public class Protocol {
                     c_state = IDLE;
                 }
             } else if (c_state == HEADER_ARROW || c_state == HEADER_ERR) {
-                // is this an error message?
-                err_rcvd = (c_state == HEADER_ERR);        // now we are expecting the payload size
+                // 这是错误消息吗?
+                err_rcvd = (c_state == HEADER_ERR);        // 现在我们期待有效载荷的大小
                 dataSize = (c & 0xFF);
-                // reset index variables
+                // 复位指标变量
                 p = 0;
                 offset = 0;
                 checksum = 0;
                 checksum ^= (c & 0xFF);
-                // the command is to follow
+                // 命令如下
                 c_state = HEADER_SIZE;
             } else if (c_state == HEADER_SIZE) {
                 cmd = (byte) (c & 0xFF);
@@ -171,12 +171,12 @@ public class Protocol {
                 inBuf[offset++] = (byte) (c & 0xFF);
             } else if (c_state == HEADER_CMD && offset >= dataSize) {
                 frameEnd = true;
-                // compare calculated and transferred checksum
+                // 比较计算和转移校验和
                 if ((checksum & 0xFF) == (c & 0xFF)) {//校验对比
                     if (err_rcvd) {
                         //System.err.println("Copter did not understand request type "+c);
                     } else {
-                        // we got a valid response packet, evaluate it
+                        // 我们得到了一个有效的响应包，对它进行评估
                         evaluateCommand(cmd, dataSize);
                         System.out.println("cmd=" + cmd);
                     }

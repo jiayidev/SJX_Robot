@@ -299,6 +299,9 @@ public class ServerSocketUtil extends Service {
                 }
             }).start();
 
+
+
+
             try {
                 in = socket.getInputStream();
                 out = socket.getOutputStream();
@@ -313,12 +316,14 @@ public class ServerSocketUtil extends Service {
             }
             //打印日志
             Constant.debugLog("IsHAVE----->" + IsHave);
+
             if (IsHave) {
                 int j = 0;
                 Constant.debugLog("IsHAVE----->" + socketList.size());
                 while (j < socketList.size()) {
                     //打印日志
                     Constant.debugLog(socketList.get(j).get("ip") + "<---------->" + ip + "ip");
+
                     if (socketList.get(j).get("ip").equals(ip)) {
                         try {
                             // 打印Log
@@ -327,13 +332,16 @@ public class ServerSocketUtil extends Service {
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
+
                         try {
                             // 打印Log
                             Constant.debugLog("socketClose");
+
                             ((Socket) socketList.get(j).get("socket")).close();
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
+
                         socketList.remove(j);
                         // 打印Log
                         Constant.debugLog("socketList----->" + socketList.toString());
@@ -405,6 +413,7 @@ public class ServerSocketUtil extends Service {
                     byte[] bytes = msg.getBytes();
                     // 打印日志
                     Constant.debugLog(bytes[0] + "bytes");
+
                     flag = false;
                     List<String> str = new ArrayList<>();
                     int k = 0;
@@ -531,11 +540,16 @@ public class ServerSocketUtil extends Service {
                     out.write(string.getBytes());
                 } catch (IOException e) {
                     e.printStackTrace();
+                    // 打印Log
                     Constant.debugLog(e.toString());
                 }
             }
         }
     }
+
+
+
+
 
     //移除Socket
     public void removeSocket(String ip) {
